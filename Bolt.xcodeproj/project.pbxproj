@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		453B267D29FB660300E2E1E7 /* BoltViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */; };
+		453B267E29FB660600E2E1E7 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE129D361E9002DC0B9 /* SMC.swift */; };
+		453B268029FC24B200E2E1E7 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */; };
 		45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD129D361C1002DC0B9 /* BoltApp.swift */; };
-		45BA2BD429D361C1002DC0B9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD329D361C1002DC0B9 /* ContentView.swift */; };
+		45BA2BD429D361C1002DC0B9 /* BoltIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD329D361C1002DC0B9 /* BoltIntroView.swift */; };
 		45BA2BD629D361C2002DC0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD529D361C2002DC0B9 /* Assets.xcassets */; };
 		45BA2BD929D361C2002DC0B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		45BA2BCE29D361C1002DC0B9 /* Bolt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bolt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BA2BD129D361C1002DC0B9 /* BoltApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltApp.swift; sourceTree = "<group>"; };
-		45BA2BD329D361C1002DC0B9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		45BA2BD329D361C1002DC0B9 /* BoltIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltIntroView.swift; sourceTree = "<group>"; };
 		45BA2BD529D361C2002DC0B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BA2BDA29D361C2002DC0B9 /* Bolt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bolt.entitlements; sourceTree = "<group>"; };
+		45BA2BE129D361E9002DC0B9 /* SMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
+		45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +39,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		453B268129FC27BE00E2E1E7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				45BA2BD329D361C1002DC0B9 /* BoltIntroView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		453B268229FC27CA00E2E1E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		453B268329FC27F200E2E1E7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		453B268429FC27F900E2E1E7 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				45BA2BE129D361E9002DC0B9 /* SMC.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		45BA2BC529D361C1002DC0B9 = {
 			isa = PBXGroup;
 			children = (
@@ -53,7 +91,10 @@
 			isa = PBXGroup;
 			children = (
 				45BA2BD129D361C1002DC0B9 /* BoltApp.swift */,
-				45BA2BD329D361C1002DC0B9 /* ContentView.swift */,
+				453B268329FC27F200E2E1E7 /* ViewModels */,
+				453B268429FC27F900E2E1E7 /* Helpers */,
+				453B268129FC27BE00E2E1E7 /* Views */,
+				453B268229FC27CA00E2E1E7 /* Extensions */,
 				45BA2BD529D361C2002DC0B9 /* Assets.xcassets */,
 				45BA2BDA29D361C2002DC0B9 /* Bolt.entitlements */,
 				45BA2BD729D361C2002DC0B9 /* Preview Content */,
@@ -139,8 +180,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45BA2BD429D361C1002DC0B9 /* ContentView.swift in Sources */,
+				453B268029FC24B200E2E1E7 /* VisualEffectView.swift in Sources */,
+				453B267D29FB660300E2E1E7 /* BoltViewModel.swift in Sources */,
+				45BA2BD429D361C1002DC0B9 /* BoltIntroView.swift in Sources */,
 				45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */,
+				453B267E29FB660600E2E1E7 /* SMC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

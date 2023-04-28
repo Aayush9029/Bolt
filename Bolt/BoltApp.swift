@@ -11,7 +11,17 @@ import SwiftUI
 struct BoltApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            BoltIntroView()
+                .frame(width: 520, height: 640)
+                .background(
+                    VisualEffectBlur(
+                        material: .fullScreenUI,
+                        blendingMode: .behindWindow
+                    )
+                    .ignoresSafeArea()
+                )
         }
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
     }
 }
