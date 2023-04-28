@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45166EAE29FC6CC100402485 /* CCGlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45166EAD29FC6CC100402485 /* CCGlassModifier.swift */; };
 		453B267D29FB660300E2E1E7 /* BoltViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */; };
 		453B267E29FB660600E2E1E7 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE129D361E9002DC0B9 /* SMC.swift */; };
 		453B268029FC24B200E2E1E7 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */; };
 		453B268629FC2EB400E2E1E7 /* AnimatedBolt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B268529FC2EB400E2E1E7 /* AnimatedBolt.swift */; };
 		453B268829FC2F0E00E2E1E7 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B268729FC2F0E00E2E1E7 /* MenuView.swift */; };
+		4564D52529FC6F6500EFA12E /* MacControlCenterUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4564D52429FC6F6500EFA12E /* MacControlCenterUI */; };
 		45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD129D361C1002DC0B9 /* BoltApp.swift */; };
 		45BA2BD429D361C1002DC0B9 /* BoltIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD329D361C1002DC0B9 /* BoltIntroView.swift */; };
 		45BA2BD629D361C2002DC0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD529D361C2002DC0B9 /* Assets.xcassets */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		45166EAD29FC6CC100402485 /* CCGlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCGlassModifier.swift; sourceTree = "<group>"; };
+		45166EB229FC6F4800402485 /* MacControlCenterUI-main */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "MacControlCenterUI-main"; path = "Bolt/LocalPackages/MacControlCenterUI-main"; sourceTree = "<group>"; };
 		453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		453B268529FC2EB400E2E1E7 /* AnimatedBolt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedBolt.swift; sourceTree = "<group>"; };
 		453B268729FC2F0E00E2E1E7 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -37,12 +41,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4564D52529FC6F6500EFA12E /* MacControlCenterUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45166EAA29FC6C5B00402485 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		453B268129FC27BE00E2E1E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +68,7 @@
 		453B268229FC27CA00E2E1E7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				45166EAD29FC6CC100402485 /* CCGlassModifier.swift */,
 				453B267F29FC24B200E2E1E7 /* VisualEffectView.swift */,
 			);
 			path = Extensions;
@@ -80,8 +93,10 @@
 		45BA2BC529D361C1002DC0B9 = {
 			isa = PBXGroup;
 			children = (
+				45166EB229FC6F4800402485 /* MacControlCenterUI-main */,
 				45BA2BD029D361C1002DC0B9 /* Bolt */,
 				45BA2BCF29D361C1002DC0B9 /* Products */,
+				45166EAA29FC6C5B00402485 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +147,9 @@
 			dependencies = (
 			);
 			name = Bolt;
+			packageProductDependencies = (
+				4564D52429FC6F6500EFA12E /* MacControlCenterUI */,
+			);
 			productName = Bolt;
 			productReference = 45BA2BCE29D361C1002DC0B9 /* Bolt.app */;
 			productType = "com.apple.product-type.application";
@@ -193,6 +211,7 @@
 				453B268629FC2EB400E2E1E7 /* AnimatedBolt.swift in Sources */,
 				45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */,
 				453B267E29FB660600E2E1E7 /* SMC.swift in Sources */,
+				45166EAE29FC6CC100402485 /* CCGlassModifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +407,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4564D52429FC6F6500EFA12E /* MacControlCenterUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MacControlCenterUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 45BA2BC629D361C1002DC0B9 /* Project object */;
 }

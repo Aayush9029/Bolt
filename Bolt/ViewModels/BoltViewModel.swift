@@ -6,30 +6,60 @@
 //
 
 import Foundation
+import IOKit.ps
 import IOKit.pwr_mgt
 import SwiftUI
 
 final class BoltViewModel: ObservableObject {
-    @Published var bclmValue: Int = 0
+    @AppStorage("boltActive") var active: Bool = false
+    @Published var limitCharge: CGFloat = 0.75
+    let boltHelper = BoltHelper.shared
 
-    private let boltHelper = BoltHelper.shared
+    var bclmValue: Int {
+        return Int(limitCharge * 100)
+    }
 
     init() {
-        fetchBCLMValue()
+//        fetchBCLMValue()
+        getCurrentBattery()
     }
 
     func fetchBCLMValue() {
         boltHelper.readBCLM { value in
             DispatchQueue.main.async {
-                self.bclmValue = Int(value)
-                print("BCLM VALUE: \(value)")
+                self.limitCharge = CGFloat(value / 100)
             }
         }
     }
 
     func updateBCLMValue(newValue: Int) {
-        bclmValue = newValue
         boltHelper.writeBCLM(value: newValue)
+    }
+
+    func getCurrentBattery() -> Int? {
+        // Take a snapshot of all the power source info
+        let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()
+
+        // Pull out a list of power sources
+        let sources = IOPSCopyPowerSourcesList(snapshot).takeRetainedValue() as Array
+
+        // For each power source...
+        for ps in sources {
+            // Fetch the information for a given power source out of our snapshot
+            let info = IOPSGetPowerSourceDescription(snapshot, ps).takeUnretainedValue() as! [String: AnyObject]
+
+            // Pull out the name and capacity
+            if let name = info[kIOPSNameKey] as? String,
+               let capacity = info[kIOPSCurrentCapacityKey] as? Int,
+               let max = info[kIOPSMaxCapacityKey] as? Int
+            {
+                if max > 50 {
+                    return capacity
+                }
+                print("\(name): \(capacity) of \(max)")
+            }
+        }
+        return nil
     }
 }
 
