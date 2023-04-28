@@ -9,8 +9,10 @@ import SwiftUI
 
 struct BoltIntroView: View {
 //    @StateObject private var boltVM: BoltViewModel = .init()
+    @State private var animationComplete: Bool = false
+    @State private var animated: Bool = false
     @State private var hovering: Bool = false
-    @State private var percentage: Double = 0
+
     @State private var showInfoView: Bool = false
     var body: some View {
         Group {
@@ -19,14 +21,16 @@ struct BoltIntroView: View {
             } else {
                 VStack {
                     ZStack {
-                        AnimatedBolt(batteryPercentage: percentage)
-                        Text("BOLT")
+                        AnimatedBolt(batteryPercentage: animated ? 100 : 0)
+                        Text(animationComplete ? "NEXT" : "BOLT")
                             .font(.largeTitle.bold())
-                            .opacity(percentage / 100.0)
+                            .opacity(animated ? 1 : 0)
                     }
                     .onHover { state in
-                        withAnimation {
-                            hovering = state
+                        if animationComplete {
+                            withAnimation {
+                                hovering = state
+                            }
                         }
                     }
                 }
@@ -35,11 +39,16 @@ struct BoltIntroView: View {
                 .padding()
                 .onAppear {
                     withAnimation(.easeIn(duration: 6)) {
-                        percentage = 100
+                        animated.toggle()
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+                        animationComplete.toggle()
                     }
                 }
                 .onTapGesture {
-                    showInfoView.toggle()
+                    if animationComplete {
+                        showInfoView.toggle()
+                    }
                 }
             }
         }
