@@ -5,26 +5,38 @@
 //  Created by Aayush Pokharel on 2023-03-28.
 //
 
+import Combine
 import Foundation
 import IOKit.ps
 import IOKit.pwr_mgt
 import SwiftUI
 
 final class BoltViewModel: ObservableObject {
-    @AppStorage("boltActive") var active: Bool = false
-    @Published var limitCharge: CGFloat = 0.75
     let boltHelper = BoltHelper.shared
 
-    var bclmValue: Int {
-        return Int(limitCharge * 100)
+    @Published var batteryInfo: BatteryInfo?
+    @Published var limitCharge: CGFloat = 0.0 {
+        didSet {
+            valueChangedSubject.send(limitCharge)
+        }
     }
+
+    var bclmValue: Int { return Int(limitCharge * 100) }
+
+    private var cancellable: AnyCancellable?
+    private let valueChangedSubject = PassthroughSubject<CGFloat, Never>()
 
     init() {
-//        fetchBCLMValue()
-        getCurrentBattery()
+        cancellable = valueChangedSubject
+            .debounce(for: .seconds(3), scheduler: DispatchQueue.main)
+            .sink { _ in
+                self.updateBCLMValue(newValue: self.bclmValue)
+            }
+        refreshBCLMValue()
+        refreshBatteryStatus()
     }
 
-    func fetchBCLMValue() {
+    func refreshBCLMValue() {
         boltHelper.readBCLM { value in
             DispatchQueue.main.async {
                 self.limitCharge = CGFloat(value / 100)
@@ -32,34 +44,25 @@ final class BoltViewModel: ObservableObject {
         }
     }
 
-    func updateBCLMValue(newValue: Int) {
+    private func updateBCLMValue(newValue: Int) {
+        print("Writing to smc: \(newValue)")
         boltHelper.writeBCLM(value: newValue)
     }
 
-    func getCurrentBattery() -> Int? {
-        // Take a snapshot of all the power source info
+    func refreshBatteryStatus() {
         let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()
-
-        // Pull out a list of power sources
         let sources = IOPSCopyPowerSourcesList(snapshot).takeRetainedValue() as Array
 
         // For each power source...
         for ps in sources {
-            // Fetch the information for a given power source out of our snapshot
             let info = IOPSGetPowerSourceDescription(snapshot, ps).takeUnretainedValue() as! [String: AnyObject]
-
             // Pull out the name and capacity
-            if let name = info[kIOPSNameKey] as? String,
-               let capacity = info[kIOPSCurrentCapacityKey] as? Int,
-               let max = info[kIOPSMaxCapacityKey] as? Int
-            {
-                if max > 50 {
-                    return capacity
+            if (info[kIOPSMaxCapacityKey] as? Int ?? 0) > 50 {
+                DispatchQueue.main.async {
+                    self.batteryInfo = BatteryInfo(info: info)
                 }
-                print("\(name): \(capacity) of \(max)")
             }
         }
-        return nil
     }
 }
 
@@ -75,6 +78,7 @@ final class BoltHelper: NSObject {
     }
 
     func writeBCLM(value: Int) {
+        if value < 20 { return }
         writeSMCByte(key: "BCLM", value: UInt8(value))
         writeSMCByte(key: "BFCL", value: UInt8(value - 5))
     }
@@ -104,7 +108,9 @@ final class BoltHelper: NSObject {
 
             if modifiedKeys[key] == nil {
                 try? SMCKit.writeData(smcKey, data: bytes)
+                print("SMC: Wrote data, \(value)")
             } else {
+                print("SMC: Error Writing data, \(value)")
                 readSMCByte(key: key) { originalValue in
                     self.modifiedKeys[key] = originalValue
                     try? SMCKit.writeData(smcKey, data: bytes)

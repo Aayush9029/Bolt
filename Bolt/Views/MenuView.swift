@@ -6,14 +6,21 @@
 //
 
 import MacControlCenterUI
+import Sparkle
 import SwiftUI
 
 struct MenuView: View {
+//    updateBCLMValue
+    @Binding var isPresented: Bool
     @EnvironmentObject var boltVM: BoltViewModel
+    var updater: SPUUpdater? = nil
     var body: some View {
-        MacControlCenterMenu(isPresented: .constant(true)) {
+        MacControlCenterMenu(isPresented: $isPresented) {
             MenuSection("Limit Charging", divider: false)
-            MenuSlider(value: $boltVM.limitCharge, image: Image(systemName: boltVM.bclmValue > 95 ? "battery.100.bolt" : "battery.75"))
+            MenuSlider(
+                value: $boltVM.limitCharge,
+                image: Image(systemName: boltVM.bclmValue > 95 ? "battery.100.bolt" : "battery.75")
+            )
 
             MenuSection("Current Information")
             HStack {
@@ -30,39 +37,46 @@ struct MenuView: View {
                     }
                 }
             }
-            HStack {
-                Text("Current Percentage")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text(String(boltVM.getCurrentBattery() ?? 0) + "%")
-                    .foregroundStyle(.primary)
+            if let info = boltVM.batteryInfo {
+                HStack {
+                    Text("Current Capacity")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(info.currentCapacity ?? 0)%")
+                        .foregroundStyle(.primary)
+                }
+                if let time = info.timeToEmptyFormatted() {
+                    HStack {
+                        Text("Time Till Empty")
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Text(time)
+                            .foregroundStyle(.primary)
+                    }
+                }
             }
-//            HStack {
-//                Text("Power Source")
-//                    .foregroundStyle(.secondary)
-//                Spacer()
-//                Text("Power Adapter")
-//                    .foregroundStyle(.primary)
-//            }
 
-//            MenuSection("Battery Health")
-//            HStack {
-//                Text("Condition")
-//                    .foregroundStyle(.secondary)
-//                Spacer()
-//                Text("Normal")
-//                    .foregroundStyle(.primary)
-//            }
-//
-//            HStack {
-//                Text("Max Capacity")
-//                    .foregroundStyle(.secondary)
-//                Spacer()
-//                Text("98%")
-//                    .foregroundStyle(.primary)
-//            }
-
+            MenuSection("Battery Information")
+            VStack(spacing: 6) {
+                if let info = boltVM.batteryInfo {
+                    ForEach(info.properties, id: \.key) { item in
+                        if !item.value.isEmpty {
+                            HStack {
+                                Text(item.key)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text(item.value)
+                                    .foregroundStyle(.primary)
+                            }
+                        }
+                    }
+                }
+            }
             Divider()
+
+            if let updater {
+                CheckForUpdates(updater: updater)
+            }
 
             MenuCommand("About Bolt...") {
                 showStandardAboutWindow()
@@ -97,7 +111,7 @@ struct MenuView: View {
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuView()
+        MenuView(isPresented: .constant(true))
             .frame(width: 320)
             .padding(.vertical)
             .environmentObject(BoltViewModel())
