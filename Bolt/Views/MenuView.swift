@@ -20,44 +20,52 @@ struct MenuView: View {
                 Text("Charge Limit")
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text(String(boltVM.bclmValue) + "%")
-                    .foregroundStyle(.primary)
+                Group {
+                    if boltVM.limitCharge < 0.95 {
+                        Text(String(boltVM.bclmValue) + "%")
+                            .foregroundStyle(.primary)
+                    } else {
+                        Text("Disabled")
+                            .foregroundStyle(.tertiary)
+                    }
+                }
             }
             HStack {
-                Text("Charge Percentage")
+                Text("Current Percentage")
                     .foregroundStyle(.secondary)
                 Spacer()
                 Text(String(boltVM.getCurrentBattery() ?? 0) + "%")
                     .foregroundStyle(.primary)
             }
-            HStack {
-                Text("Power Source")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text("Power Adapter")
-                    .foregroundStyle(.primary)
-            }
-            MenuSection("Battery Health")
-            HStack {
-                Text("Condition")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text("Normal")
-                    .foregroundStyle(.primary)
-            }
+//            HStack {
+//                Text("Power Source")
+//                    .foregroundStyle(.secondary)
+//                Spacer()
+//                Text("Power Adapter")
+//                    .foregroundStyle(.primary)
+//            }
 
-            HStack {
-                Text("Max Capacity")
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Text("98%")
-                    .foregroundStyle(.primary)
-            }
+//            MenuSection("Battery Health")
+//            HStack {
+//                Text("Condition")
+//                    .foregroundStyle(.secondary)
+//                Spacer()
+//                Text("Normal")
+//                    .foregroundStyle(.primary)
+//            }
+//
+//            HStack {
+//                Text("Max Capacity")
+//                    .foregroundStyle(.secondary)
+//                Spacer()
+//                Text("98%")
+//                    .foregroundStyle(.primary)
+//            }
 
             Divider()
 
-            MenuCommand("Bolt Settings...") {
-                print("Settings View Shown")
+            MenuCommand("About Bolt...") {
+                showStandardAboutWindow()
             }
         }
     }
@@ -76,6 +84,14 @@ struct MenuView: View {
             MenuSlider(value: .constant(0.50), image: Image(systemName: "bolt.fill"))
         }
         .ccGlassButton()
+    }
+
+    func showStandardAboutWindow() {
+        NSApp.sendAction(
+            #selector(NSApplication.orderFrontStandardAboutPanel(_:)),
+            to: nil,
+            from: nil
+        )
     }
 }
 

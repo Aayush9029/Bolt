@@ -15,22 +15,8 @@ struct BoltApp: App {
             MenuView()
                 .environmentObject(boltVM)
         } label: {
-            Label("Bolt", systemImage: boltVM.active ? "bolt.fill" : "bolt")
+            Label("Bolt", systemImage: boltVM.limitCharge > 0.95 ? "bolt" : "bolt.fill")
         }
         .menuBarExtraStyle(.window)
-
-        WindowGroup {
-            BoltIntroView()
-                .frame(width: 520, height: 640)
-                .background(
-                    VisualEffectBlur(
-                        material: .fullScreenUI,
-                        blendingMode: .behindWindow
-                    )
-                    .ignoresSafeArea()
-                )
-        }
-        .windowResizability(.contentSize)
-        .windowStyle(.hiddenTitleBar)
     }
 }
