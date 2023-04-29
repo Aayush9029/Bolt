@@ -15,7 +15,7 @@
     <img alt="" src="https://img.shields.io/badge/Support%20Development-black.svg?style=for-the-badge&logo=ko-fi">
 </p>
 
-Introducing Bolt Mac App, the ultimate battery management tool for your Mac that puts you in control of your device's charging behavior. Bolt empowers users to limit their battery charge and offers a suite of features that help enhance the longevity and efficiency of their MacBook's battery. 
+Introducing Bolt Mac App, the ultimate battery management tool for Mac users. It puts them in control of their device's charging behavior, enabling them to limit their battery charge and improve its longevity and efficiency. For further info, refer to this [paper](https://batteryuniversity.com/article/bu-808-how-to-prolong-lithium-based-batteries) which explains how limiting charge extends battery life.
 
 <img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/43297314/235262487-14adc98d-eade-4485-9d77-822d9f22f16e.png">
 
