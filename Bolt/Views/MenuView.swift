@@ -10,9 +10,12 @@ import Sparkle
 import SwiftUI
 
 struct MenuView: View {
-//    updateBCLMValue
-    @Binding var isPresented: Bool
     @EnvironmentObject var boltVM: BoltViewModel
+
+//    if option key was help show it
+    @State private var showDetails: Bool = true
+    @State private var isPresented: Bool = false
+
     var updater: SPUUpdater? = nil
     var body: some View {
         MacControlCenterMenu(isPresented: $isPresented) {
@@ -55,18 +58,19 @@ struct MenuView: View {
                     }
                 }
             }
-
-            MenuSection("Battery Information")
-            VStack(spacing: 6) {
-                if let info = boltVM.batteryInfo {
-                    ForEach(info.properties, id: \.key) { item in
-                        if !item.value.isEmpty {
-                            HStack {
-                                Text(item.key)
-                                    .foregroundStyle(.secondary)
-                                Spacer()
-                                Text(item.value)
-                                    .foregroundStyle(.primary)
+            if showDetails {
+                MenuSection("Battery Information")
+                VStack(spacing: 6) {
+                    if let info = boltVM.batteryInfo {
+                        ForEach(info.properties, id: \.key) { item in
+                            if !item.value.isEmpty {
+                                HStack {
+                                    Text(item.key)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Text(item.value)
+                                        .foregroundStyle(.primary)
+                                }
                             }
                         }
                     }
@@ -107,11 +111,15 @@ struct MenuView: View {
             from: nil
         )
     }
+
+    func isOptionkeyPressed() -> Bool {
+        return NSApp.currentEvent?.modifierFlags.contains(.option) == true
+    }
 }
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuView(isPresented: .constant(true))
+        MenuView()
             .frame(width: 320)
             .padding(.vertical)
             .environmentObject(BoltViewModel())

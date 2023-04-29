@@ -26,12 +26,11 @@ struct BoltApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MenuView(isPresented: $isPresented, updater: updaterController.updater)
+            MenuView(updater: updaterController.updater)
                 .environmentObject(boltVM)
         } label: {
             Label("Bolt", systemImage: boltVM.limitCharge > 0.95 ? "bolt" : "bolt.fill")
         }
-
         .menuBarExtraStyle(.window)
         .commands {
             CommandGroup(after: .appInfo) {
