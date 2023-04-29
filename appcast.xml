@@ -8,7 +8,7 @@
             <sparkle:version>3</sparkle:version>
             <sparkle:shortVersionString>0.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://aayush9029.github.io/Bolt/Bolt.dmg" length="2552352" type="application/octet-stream" sparkle:edSignature="UB4K9HQeTl5GuMHzaBnuFN5ZxlCycmsbBqQGMyMAtiXK3bz1ylai9gTqkoI8Axg2/8E+MtfoNaPE+6xk49qpDw=="/>
+            <enclosure url="https://github.com/Aayush9029/Bolt/releases/download/v0.1/Bolt.dmg" length="2552352" type="application/octet-stream" sparkle:edSignature="UB4K9HQeTl5GuMHzaBnuFN5ZxlCycmsbBqQGMyMAtiXK3bz1ylai9gTqkoI8Axg2/8E+MtfoNaPE+6xk49qpDw=="/>
         </item>
     </channel>
 </rss>
