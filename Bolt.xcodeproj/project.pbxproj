@@ -16,9 +16,25 @@
 		45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD129D361C1002DC0B9 /* BoltApp.swift */; };
 		45BA2BD629D361C2002DC0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD529D361C2002DC0B9 /* Assets.xcassets */; };
 		45BA2BD929D361C2002DC0B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */; };
+		45BB77CB29FF203E009F129F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77CA29FF203E009F129F /* main.swift */; };
+		45BB77D129FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
+		45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
+		45BB77D629FF2447009F129F /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D529FF2447009F129F /* ServiceManager.swift */; };
 		45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */; };
 		45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5AC29FDB492001A458C /* BatteryInfo.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		45BB77C629FF203E009F129F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		45166EAD29FC6CC100402485 /* CCGlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCGlassModifier.swift; sourceTree = "<group>"; };
@@ -32,6 +48,10 @@
 		45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BA2BDA29D361C2002DC0B9 /* Bolt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bolt.entitlements; sourceTree = "<group>"; };
 		45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltViewModel.swift; sourceTree = "<group>"; };
+		45BB77C829FF203E009F129F /* Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Helper; sourceTree = BUILT_PRODUCTS_DIR; };
+		45BB77CA29FF203E009F129F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		45BB77D029FF2100009F129F /* HelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperProtocol.swift; sourceTree = "<group>"; };
+		45BB77D529FF2447009F129F /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
 		45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		45DAB5AA29FDA4A2001A458C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		45DAB5AC29FDB492001A458C /* BatteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryInfo.swift; sourceTree = "<group>"; };
@@ -43,6 +63,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				453EA8CA29FF1E4300D768CB /* MacControlCenterUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45BB77C529FF203E009F129F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,8 +120,10 @@
 		45BA2BC529D361C1002DC0B9 = {
 			isa = PBXGroup;
 			children = (
+				45BB77CF29FF20B9009F129F /* Shared */,
 				453EA8C829FF1E3700D768CB /* Packages */,
 				45BA2BD029D361C1002DC0B9 /* Bolt */,
+				45BB77C929FF203E009F129F /* Helper */,
 				45BA2BCF29D361C1002DC0B9 /* Products */,
 				45166EAA29FC6C5B00402485 /* Frameworks */,
 			);
@@ -104,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				45BA2BCE29D361C1002DC0B9 /* Bolt.app */,
+				45BB77C829FF203E009F129F /* Helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,6 +143,7 @@
 			children = (
 				45DAB5AA29FDA4A2001A458C /* Info.plist */,
 				45BA2BD129D361C1002DC0B9 /* BoltApp.swift */,
+				45BB77D529FF2447009F129F /* ServiceManager.swift */,
 				45DAB5AB29FDB487001A458C /* Models */,
 				453B268329FC27F200E2E1E7 /* ViewModels */,
 				453B268129FC27BE00E2E1E7 /* Views */,
@@ -131,6 +162,22 @@
 				45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		45BB77C929FF203E009F129F /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				45BB77CA29FF203E009F129F /* main.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		45BB77CF29FF20B9009F129F /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				45BB77D029FF2100009F129F /* HelperProtocol.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		45DAB5A229FD9F25001A458C /* ViewModifiers */ = {
@@ -172,6 +219,23 @@
 			productReference = 45BA2BCE29D361C1002DC0B9 /* Bolt.app */;
 			productType = "com.apple.product-type.application";
 		};
+		45BB77C729FF203E009F129F /* Helper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45BB77CE29FF203E009F129F /* Build configuration list for PBXNativeTarget "Helper" */;
+			buildPhases = (
+				45BB77C429FF203E009F129F /* Sources */,
+				45BB77C529FF203E009F129F /* Frameworks */,
+				45BB77C629FF203E009F129F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Helper;
+			productName = Helper;
+			productReference = 45BB77C829FF203E009F129F /* Helper */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -183,6 +247,9 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					45BA2BCD29D361C1002DC0B9 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					45BB77C729FF203E009F129F = {
 						CreatedOnToolsVersion = 14.3;
 					};
 				};
@@ -203,6 +270,7 @@
 			projectRoot = "";
 			targets = (
 				45BA2BCD29D361C1002DC0B9 /* Bolt */,
+				45BB77C729FF203E009F129F /* Helper */,
 			);
 		};
 /* End PBXProject section */
@@ -224,14 +292,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45BB77D629FF2447009F129F /* ServiceManager.swift in Sources */,
 				453B268829FC2F0E00E2E1E7 /* MenuView.swift in Sources */,
 				45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */,
 				453B268029FC24B200E2E1E7 /* View+Extension.swift in Sources */,
 				453EA8C529FF1DF500D768CB /* BoltViewModel.swift in Sources */,
 				453EA8BB29FF1D0C00D768CB /* Logger+Extension.swift in Sources */,
+				45BB77D129FF2100009F129F /* HelperProtocol.swift in Sources */,
 				45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */,
 				45166EAE29FC6CC100402485 /* CCGlassModifier.swift in Sources */,
 				45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45BB77C429FF203E009F129F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45BB77CB29FF203E009F129F /* main.swift in Sources */,
+				45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,7 +367,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -342,7 +421,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -371,7 +450,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 0.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -400,11 +479,37 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 0.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		45BB77CC29FF203E009F129F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4538W4A79B;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt.Helper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		45BB77CD29FF203E009F129F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4538W4A79B;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt.Helper;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -426,6 +531,15 @@
 			buildConfigurations = (
 				45BA2BDE29D361C2002DC0B9 /* Debug */,
 				45BA2BDF29D361C2002DC0B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45BB77CE29FF203E009F129F /* Build configuration list for PBXNativeTarget "Helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45BB77CC29FF203E009F129F /* Debug */,
+				45BB77CD29FF203E009F129F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
