@@ -6,7 +6,6 @@
 //
 
 import MacControlCenterUI
-import Sparkle
 import SwiftUI
 
 struct MenuView: View {
@@ -16,7 +15,6 @@ struct MenuView: View {
     @State private var showDetails: Bool = true
     @State private var isPresented: Bool = false
 
-    var updater: SPUUpdater? = nil
     var body: some View {
         MacControlCenterMenu(isPresented: $isPresented) {
             MenuSection("Limit Charging", divider: false)
@@ -77,10 +75,6 @@ struct MenuView: View {
                 }
             }
             Divider()
-
-            if let updater {
-                CheckForUpdates(updater: updater)
-            }
 
             MenuCommand("About Bolt...") {
                 showStandardAboutWindow()

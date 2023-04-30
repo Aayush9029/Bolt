@@ -8,40 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		45166EAE29FC6CC100402485 /* CCGlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45166EAD29FC6CC100402485 /* CCGlassModifier.swift */; };
-		453B267D29FB660300E2E1E7 /* BoltViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */; };
-		453B267E29FB660600E2E1E7 /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE129D361E9002DC0B9 /* SMC.swift */; };
 		453B268029FC24B200E2E1E7 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B267F29FC24B200E2E1E7 /* View+Extension.swift */; };
 		453B268829FC2F0E00E2E1E7 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B268729FC2F0E00E2E1E7 /* MenuView.swift */; };
-		4564D52529FC6F6500EFA12E /* MacControlCenterUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4564D52429FC6F6500EFA12E /* MacControlCenterUI */; };
+		453EA8BB29FF1D0C00D768CB /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */; };
+		453EA8C529FF1DF500D768CB /* BoltViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */; };
+		453EA8CA29FF1E4300D768CB /* MacControlCenterUI in Frameworks */ = {isa = PBXBuildFile; productRef = 453EA8C929FF1E4300D768CB /* MacControlCenterUI */; };
 		45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD129D361C1002DC0B9 /* BoltApp.swift */; };
 		45BA2BD629D361C2002DC0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD529D361C2002DC0B9 /* Assets.xcassets */; };
 		45BA2BD929D361C2002DC0B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */; };
 		45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */; };
-		45DAB5A529FD9F66001A458C /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 45DAB5A429FD9F66001A458C /* Sparkle */; };
-		45DAB5A729FDA105001A458C /* AppUpdaterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A629FDA105001A458C /* AppUpdaterViewModel.swift */; };
-		45DAB5A929FDA15C001A458C /* CheckForUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A829FDA15C001A458C /* CheckForUpdates.swift */; };
 		45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5AC29FDB492001A458C /* BatteryInfo.swift */; };
-		45DAB5AF29FDB5E7001A458C /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5AE29FDB5E7001A458C /* test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		45166EAD29FC6CC100402485 /* CCGlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCGlassModifier.swift; sourceTree = "<group>"; };
-		45166EB229FC6F4800402485 /* MacControlCenterUI-main */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "MacControlCenterUI-main"; path = "Bolt/LocalPackages/MacControlCenterUI-main"; sourceTree = "<group>"; };
 		453B267F29FC24B200E2E1E7 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		453B268729FC2F0E00E2E1E7 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extension.swift"; sourceTree = "<group>"; };
+		453EA8C729FF1E3000D768CB /* MacControlCenterUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MacControlCenterUI; sourceTree = "<group>"; };
 		45BA2BCE29D361C1002DC0B9 /* Bolt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bolt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BA2BD129D361C1002DC0B9 /* BoltApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltApp.swift; sourceTree = "<group>"; };
 		45BA2BD529D361C2002DC0B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		45BA2BDA29D361C2002DC0B9 /* Bolt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bolt.entitlements; sourceTree = "<group>"; };
-		45BA2BE129D361E9002DC0B9 /* SMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
 		45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltViewModel.swift; sourceTree = "<group>"; };
 		45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
-		45DAB5A629FDA105001A458C /* AppUpdaterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdaterViewModel.swift; sourceTree = "<group>"; };
-		45DAB5A829FDA15C001A458C /* CheckForUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdates.swift; sourceTree = "<group>"; };
 		45DAB5AA29FDA4A2001A458C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		45DAB5AC29FDB492001A458C /* BatteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryInfo.swift; sourceTree = "<group>"; };
-		45DAB5AE29FDB5E7001A458C /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,8 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4564D52529FC6F6500EFA12E /* MacControlCenterUI in Frameworks */,
-				45DAB5A529FD9F66001A458C /* Sparkle in Frameworks */,
+				453EA8CA29FF1E4300D768CB /* MacControlCenterUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +60,6 @@
 			isa = PBXGroup;
 			children = (
 				453B268729FC2F0E00E2E1E7 /* MenuView.swift */,
-				45DAB5A829FDA15C001A458C /* CheckForUpdates.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -78,6 +69,7 @@
 			children = (
 				453B267F29FC24B200E2E1E7 /* View+Extension.swift */,
 				45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */,
+				453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -86,24 +78,22 @@
 			isa = PBXGroup;
 			children = (
 				45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */,
-				45DAB5A629FDA105001A458C /* AppUpdaterViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		453B268429FC27F900E2E1E7 /* Helpers */ = {
+		453EA8C829FF1E3700D768CB /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				45BA2BE129D361E9002DC0B9 /* SMC.swift */,
+				453EA8C729FF1E3000D768CB /* MacControlCenterUI */,
 			);
-			path = Helpers;
+			path = Packages;
 			sourceTree = "<group>";
 		};
 		45BA2BC529D361C1002DC0B9 = {
 			isa = PBXGroup;
 			children = (
-				45DAB5AE29FDB5E7001A458C /* test.swift */,
-				45166EB229FC6F4800402485 /* MacControlCenterUI-main */,
+				453EA8C829FF1E3700D768CB /* Packages */,
 				45BA2BD029D361C1002DC0B9 /* Bolt */,
 				45BA2BCF29D361C1002DC0B9 /* Products */,
 				45166EAA29FC6C5B00402485 /* Frameworks */,
@@ -125,7 +115,6 @@
 				45BA2BD129D361C1002DC0B9 /* BoltApp.swift */,
 				45DAB5AB29FDB487001A458C /* Models */,
 				453B268329FC27F200E2E1E7 /* ViewModels */,
-				453B268429FC27F900E2E1E7 /* Helpers */,
 				453B268129FC27BE00E2E1E7 /* Views */,
 				453B268229FC27CA00E2E1E7 /* Extensions */,
 				45DAB5A229FD9F25001A458C /* ViewModifiers */,
@@ -177,8 +166,7 @@
 			);
 			name = Bolt;
 			packageProductDependencies = (
-				4564D52429FC6F6500EFA12E /* MacControlCenterUI */,
-				45DAB5A429FD9F66001A458C /* Sparkle */,
+				453EA8C929FF1E4300D768CB /* MacControlCenterUI */,
 			);
 			productName = Bolt;
 			productReference = 45BA2BCE29D361C1002DC0B9 /* Bolt.app */;
@@ -209,7 +197,6 @@
 			);
 			mainGroup = 45BA2BC529D361C1002DC0B9;
 			packageReferences = (
-				45DAB5A329FD9F66001A458C /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = 45BA2BCF29D361C1002DC0B9 /* Products */;
 			projectDirPath = "";
@@ -240,14 +227,11 @@
 				453B268829FC2F0E00E2E1E7 /* MenuView.swift in Sources */,
 				45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */,
 				453B268029FC24B200E2E1E7 /* View+Extension.swift in Sources */,
-				453B267D29FB660300E2E1E7 /* BoltViewModel.swift in Sources */,
+				453EA8C529FF1DF500D768CB /* BoltViewModel.swift in Sources */,
+				453EA8BB29FF1D0C00D768CB /* Logger+Extension.swift in Sources */,
 				45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */,
-				45DAB5A929FDA15C001A458C /* CheckForUpdates.swift in Sources */,
-				453B267E29FB660600E2E1E7 /* SMC.swift in Sources */,
-				45DAB5A729FDA105001A458C /* AppUpdaterViewModel.swift in Sources */,
 				45166EAE29FC6CC100402485 /* CCGlassModifier.swift in Sources */,
 				45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */,
-				45DAB5AF29FDB5E7001A458C /* test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,26 +432,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		45DAB5A329FD9F66001A458C /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		4564D52429FC6F6500EFA12E /* MacControlCenterUI */ = {
+		453EA8C929FF1E4300D768CB /* MacControlCenterUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MacControlCenterUI;
-		};
-		45DAB5A429FD9F66001A458C /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 45DAB5A329FD9F66001A458C /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
