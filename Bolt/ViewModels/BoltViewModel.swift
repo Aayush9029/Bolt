@@ -16,9 +16,7 @@ final class BoltViewModel: ObservableObject {
 
     @Published var batteryInfo: BatteryInfo?
     @Published var limitCharge: CGFloat = 0.0 {
-        didSet {
-            valueChangedSubject.send(limitCharge)
-        }
+        didSet { valueChangedSubject.send(limitCharge) }
     }
 
     var bclmValue: Int { return Int(limitCharge * 100) }

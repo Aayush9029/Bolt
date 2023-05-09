@@ -20,6 +20,8 @@
 		45BB77D129FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
 		45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
 		45BB77D629FF2447009F129F /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D529FF2447009F129F /* ServiceManager.swift */; };
+		45BB77D829FF35AB009F129F /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D729FF35AB009F129F /* SMC.swift */; };
+		45BB77DB29FF35B6009F129F /* SMC+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77DA29FF35B6009F129F /* SMC+Keys.swift */; };
 		45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */; };
 		45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5AC29FDB492001A458C /* BatteryInfo.swift */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,8 @@
 		45BB77CA29FF203E009F129F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		45BB77D029FF2100009F129F /* HelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperProtocol.swift; sourceTree = "<group>"; };
 		45BB77D529FF2447009F129F /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
+		45BB77D729FF35AB009F129F /* SMC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
+		45BB77DA29FF35B6009F129F /* SMC+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMC+Keys.swift"; sourceTree = "<group>"; };
 		45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		45DAB5AA29FDA4A2001A458C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		45DAB5AC29FDB492001A458C /* BatteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryInfo.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 		45BB77C929FF203E009F129F /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				45BB77D929FF35AD009F129F /* SMC */,
 				45BB77CA29FF203E009F129F /* main.swift */,
 			);
 			path = Helper;
@@ -178,6 +183,15 @@
 				45BB77D029FF2100009F129F /* HelperProtocol.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		45BB77D929FF35AD009F129F /* SMC */ = {
+			isa = PBXGroup;
+			children = (
+				45BB77D729FF35AB009F129F /* SMC.swift */,
+				45BB77DA29FF35B6009F129F /* SMC+Keys.swift */,
+			);
+			path = SMC;
 			sourceTree = "<group>";
 		};
 		45DAB5A229FD9F25001A458C /* ViewModifiers */ = {
@@ -309,8 +323,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45BB77D829FF35AB009F129F /* SMC.swift in Sources */,
 				45BB77CB29FF203E009F129F /* main.swift in Sources */,
 				45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */,
+				45BB77DB29FF35B6009F129F /* SMC+Keys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
