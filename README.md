@@ -20,9 +20,12 @@ Introducing Bolt Mac App, the ultimate battery management tool for Mac users. It
 <img width="1012" alt="github banner" src="https://user-images.githubusercontent.com/43297314/235325323-848d20fd-d92e-4692-8365-e36008ae607b.png">
 
 ---
+#### Why macOS 14.0 or later?
+This modern app utilizes the latest macOS frameworks, which are not available on older macOS versions.
+![CleanShot 2023-07-10 at 05 45 00@2x](https://github.com/Aayush9029/Bolt/assets/43297314/5c2decbd-fee3-46bd-affa-795aecb960f3)
 
-> **Warning**
->
-> Work In Progress,  bolt is currently in development and not yet ready for use. Check back later for alpha release, contributions are welcome.
+---
+
+> **Warning** Bolt is currently in development and not yet ready for use. Check back later for alpha release, contributions are welcome.
 
 
