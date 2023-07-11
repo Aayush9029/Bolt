@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 extension SMCKey {
     static let disableCharging = Self(
         code: .init(fromStaticString: "CH0I"),
@@ -31,7 +29,7 @@ extension SMCKey {
     )
 }
 
-public extension SMCKit {
+extension SMCKit {
     static func writeData(_ key: SMCKey, uint8: UInt8) throws {
         var inputStruct = SMCParamStruct()
 

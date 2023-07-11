@@ -25,34 +25,32 @@
 
 import Foundation
 import IOKit
+import Shared
 
-// ------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 // MARK: Type Aliases
-
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 // http://stackoverflow.com/a/22383661
 
 /// Floating point, unsigned, 14 bits exponent, 2 bits fraction
-public typealias FPE2 = (UInt8, UInt8)
+typealias FPE2 = (UInt8, UInt8)
 
 /// Floating point, signed, 7 bits exponent, 8 bits fraction
-public typealias SP78 = (UInt8, UInt8)
+typealias SP78 = (UInt8, UInt8)
 
-public typealias SMCBytes = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
+typealias SMCBytes = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
                              UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
                              UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
                              UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
                              UInt8, UInt8, UInt8, UInt8)
 
-// ------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 // MARK: Standard Library Extensions
-
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 extension UInt32 {
+
     init(fromBytes bytes: (UInt8, UInt8, UInt8, UInt8)) {
         // TODO: Broken up due to "Expression was too complex" error as of
         //       Swift 4.
@@ -67,12 +65,14 @@ extension UInt32 {
 }
 
 extension Bool {
+
     init(fromByte byte: UInt8) {
         self = byte == 1 ? true : false
     }
 }
 
-public extension Int {
+extension Int {
+
     init(fromFPE2 bytes: FPE2) {
         self = (Int(bytes.0) << 6) + (Int(bytes.1) >> 2)
     }
@@ -83,21 +83,23 @@ public extension Int {
 }
 
 extension Double {
+
     init(fromSP78 bytes: SP78) {
         // FIXME: Handle second byte
         let sign = bytes.0 & 0x80 == 0 ? 1.0 : -1.0
-        self = sign * Double(bytes.0 & 0x7f) // AND to mask sign bit
+        self = sign * Double(bytes.0 & 0x7F)    // AND to mask sign bit
     }
 }
 
 // Thanks to Airspeed Velocity for the great idea!
 // http://airspeedvelocity.net/2015/05/22/my-talk-at-swift-summit/
-public extension FourCharCode {
+extension FourCharCode {
+
     init(fromString str: String) {
         precondition(str.count == 4)
 
         self = str.utf8.reduce(0) { sum, character in
-            sum << 8 | UInt32(character)
+            return sum << 8 | UInt32(character)
         }
     }
 
@@ -119,17 +121,15 @@ public extension FourCharCode {
 
     func toString() -> String {
         return String(describing: UnicodeScalar(self >> 24 & 0xff)!) +
-            String(describing: UnicodeScalar(self >> 16 & 0xff)!) +
-            String(describing: UnicodeScalar(self >> 8 & 0xff)!) +
-            String(describing: UnicodeScalar(self & 0xff)!)
+        String(describing: UnicodeScalar(self >> 16 & 0xff)!) +
+        String(describing: UnicodeScalar(self >> 8  & 0xff)!) +
+        String(describing: UnicodeScalar(self       & 0xff)!)
     }
 }
 
-// ------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 // MARK: Defined by AppleSMC.kext
-
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 /// Defined by AppleSMC.kext
 ///
@@ -147,24 +147,25 @@ public extension FourCharCode {
 /// * C array's are bridged as tuples
 ///
 /// http://www.opensource.apple.com/source/PowerManagement/PowerManagement-211/
-public struct SMCParamStruct {
+struct SMCParamStruct {
+
     /// I/O Kit function selector
-    public enum Selector: UInt8 {
-        case kSMCHandleYPCEvent = 2
-        case kSMCReadKey = 5
-        case kSMCWriteKey = 6
+    enum Selector: UInt8 {
+        case kSMCHandleYPCEvent  = 2
+        case kSMCReadKey         = 5
+        case kSMCWriteKey        = 6
         case kSMCGetKeyFromIndex = 8
-        case kSMCGetKeyInfo = 9
+        case kSMCGetKeyInfo      = 9
     }
 
     /// Return codes for SMCParamStruct.result property
-    public enum Result: UInt8 {
-        case kSMCSuccess = 0
-        case kSMCError = 1
+    enum Result: UInt8 {
+        case kSMCSuccess     = 0
+        case kSMCError       = 1
         case kSMCKeyNotFound = 132
     }
 
-    public struct SMCVersion {
+    struct SMCVersion {
         var major: CUnsignedChar = 0
         var minor: CUnsignedChar = 0
         var build: CUnsignedChar = 0
@@ -172,7 +173,7 @@ public struct SMCParamStruct {
         var release: CUnsignedShort = 0
     }
 
-    public struct SMCPLimitData {
+    struct SMCPLimitData {
         var version: UInt16 = 0
         var length: UInt16 = 0
         var cpuPLimit: UInt32 = 0
@@ -180,7 +181,7 @@ public struct SMCParamStruct {
         var memPLimit: UInt32 = 0
     }
 
-    public struct SMCKeyInfoData {
+    struct SMCKeyInfoData {
         /// How many bytes written to SMCParamStruct.bytes
         var dataSize: UInt32 = 0
 
@@ -222,55 +223,54 @@ public struct SMCParamStruct {
                            UInt8(0), UInt8(0))
 }
 
-// ------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 // MARK: SMC Client
-
-// ------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 /// SMC data type information
-public enum DataTypes {
+struct DataTypes {
     /// Fan information struct
-    public static let FDS =
-        DataType(type: FourCharCode(fromStaticString: "{fds"), size: 16)
-    public static let Flag =
-        DataType(type: FourCharCode(fromStaticString: "flag"), size: 1)
+    static let FDS =
+    DataType(type: FourCharCode(fromStaticString: "{fds"), size: 16)
+    static let Flag =
+    DataType(type: FourCharCode(fromStaticString: "flag"), size: 1)
     /// See type aliases
-    public static let FPE2 =
-        DataType(type: FourCharCode(fromStaticString: "fpe2"), size: 2)
+    static let FPE2 =
+    DataType(type: FourCharCode(fromStaticString: "fpe2"), size: 2)
     /// See type aliases
-    public static let SP78 =
-        DataType(type: FourCharCode(fromStaticString: "sp78"), size: 2)
-    public static let UInt8 =
-        DataType(type: FourCharCode(fromStaticString: "ui8 "), size: 1)
-    public static let UInt32 =
-        DataType(type: FourCharCode(fromStaticString: "ui32"), size: 4)
+    static let SP78 =
+    DataType(type: FourCharCode(fromStaticString: "sp78"), size: 2)
+    static let UInt8 =
+    DataType(type: FourCharCode(fromStaticString: "ui8 "), size: 1)
+    static let UInt32 =
+    DataType(type: FourCharCode(fromStaticString: "ui32"), size: 4)
 }
 
-public struct SMCKey {
+struct SMCKey {
     let code: FourCharCode
     let info: DataType
 }
 
-public struct DataType: Equatable {
+struct DataType: Equatable {
     let type: FourCharCode
     let size: UInt32
 }
 
-public func ==(lhs: DataType, rhs: DataType) -> Bool {
+func ==(lhs: DataType, rhs: DataType) -> Bool {
     return lhs.type == rhs.type && lhs.size == rhs.size
 }
 
 /// Apple System Management Controller (SMC) user-space client for Intel-based
 /// Macs. Works by talking to the AppleSMC.kext (kernel extension), the closed
 /// source driver for the SMC.
-public enum SMCKit {
+struct SMCKit {
+
     /// Connection to the SMC driver
     fileprivate static var connection: io_connect_t = 0
 
     /// Open connection to the SMC driver. This must be done first before any
     /// other calls
-    public static func open() throws {
+    static func open() throws {
         let service = IOServiceGetMatchingService(kIOMainPortDefault,
                                                   IOServiceMatching("AppleSMC"))
 
@@ -285,13 +285,13 @@ public enum SMCKit {
 
     /// Close connection to the SMC driver
     @discardableResult
-    public static func close() -> Bool {
+    static func close() -> Bool {
         let result = IOServiceClose(SMCKit.connection)
         return result == kIOReturnSuccess ? true : false
     }
 
     /// Get information about a key
-    public static func keyInformation(_ key: FourCharCode) throws -> DataType {
+    static func keyInformation(_ key: FourCharCode) throws -> DataType {
         var inputStruct = SMCParamStruct()
 
         inputStruct.key = key
@@ -304,9 +304,8 @@ public enum SMCKit {
     }
 
     /// Get information about the key at index
-    public static func keyInformationAtIndex(_ index: Int) throws ->
-        FourCharCode
-    {
+    static func keyInformationAtIndex(_ index: Int) throws ->
+    FourCharCode {
         var inputStruct = SMCParamStruct()
 
         inputStruct.data8 = SMCParamStruct.Selector.kSMCGetKeyFromIndex.rawValue
@@ -318,7 +317,7 @@ public enum SMCKit {
     }
 
     /// Read data of a key
-    public static func readData(_ key: SMCKey) throws -> SMCBytes {
+    static func readData(_ key: SMCKey) throws -> SMCBytes {
         var inputStruct = SMCParamStruct()
 
         inputStruct.key = key.code
@@ -331,7 +330,7 @@ public enum SMCKit {
     }
 
     /// Write data for a key
-    public static func writeData(_ key: SMCKey, data: SMCBytes) throws {
+    static func writeData(_ key: SMCKey, data: SMCBytes) throws {
         var inputStruct = SMCParamStruct()
 
         inputStruct.key = key.code
@@ -343,10 +342,9 @@ public enum SMCKit {
     }
 
     /// Make an actual call to the SMC driver
-    public static func callDriver(_ inputStruct: inout SMCParamStruct,
+    static func callDriver(_ inputStruct: inout SMCParamStruct,
                                   selector: SMCParamStruct.Selector = .kSMCHandleYPCEvent)
-        throws -> SMCParamStruct
-    {
+    throws -> SMCParamStruct {
         assert(MemoryLayout<SMCParamStruct>.stride == 80, "SMCParamStruct size is != 80")
 
         var outputStruct = SMCParamStruct()
@@ -374,13 +372,12 @@ public enum SMCKit {
     }
 }
 
-// ------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 // MARK: General
+//------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------
+extension SMCKit {
 
-public extension SMCKit {
     /// Get all valid SMC keys for this machine
     static func allKeys() throws -> [SMCKey] {
         let count = try keyCount()

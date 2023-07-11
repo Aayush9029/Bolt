@@ -13,6 +13,7 @@
 		453EA8BB29FF1D0C00D768CB /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */; };
 		453EA8C529FF1DF500D768CB /* BoltViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BE229D3620C002DC0B9 /* BoltViewModel.swift */; };
 		453EA8CA29FF1E4300D768CB /* MacControlCenterUI in Frameworks */ = {isa = PBXBuildFile; productRef = 453EA8C929FF1E4300D768CB /* MacControlCenterUI */; };
+		45877F912A5D36CD00E61892 /* Logger+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */; };
 		45BA2BD229D361C1002DC0B9 /* BoltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA2BD129D361C1002DC0B9 /* BoltApp.swift */; };
 		45BA2BD629D361C2002DC0B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD529D361C2002DC0B9 /* Assets.xcassets */; };
 		45BA2BD929D361C2002DC0B9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BA2BD829D361C2002DC0B9 /* Preview Assets.xcassets */; };
@@ -20,8 +21,6 @@
 		45BB77D129FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
 		45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D029FF2100009F129F /* HelperProtocol.swift */; };
 		45BB77D629FF2447009F129F /* ServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D529FF2447009F129F /* ServiceManager.swift */; };
-		45BB77D829FF35AB009F129F /* SMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77D729FF35AB009F129F /* SMC.swift */; };
-		45BB77DB29FF35B6009F129F /* SMC+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BB77DA29FF35B6009F129F /* SMC+Keys.swift */; };
 		45DAB5A129FD9EFA001A458C /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */; };
 		45DAB5AD29FDB492001A458C /* BatteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DAB5AC29FDB492001A458C /* BatteryInfo.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +43,9 @@
 		453B268729FC2F0E00E2E1E7 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extension.swift"; sourceTree = "<group>"; };
 		453EA8C729FF1E3000D768CB /* MacControlCenterUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MacControlCenterUI; sourceTree = "<group>"; };
+		45877F8E2A5D323000E61892 /* SMC+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SMC+Keys.swift"; sourceTree = "<group>"; };
+		45877F8F2A5D323000E61892 /* SMC+Temperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SMC+Temperature.swift"; sourceTree = "<group>"; };
+		45877F902A5D323000E61892 /* SMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
 		45BA2BCE29D361C1002DC0B9 /* Bolt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bolt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BA2BD129D361C1002DC0B9 /* BoltApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoltApp.swift; sourceTree = "<group>"; };
 		45BA2BD529D361C2002DC0B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,8 +56,6 @@
 		45BB77CA29FF203E009F129F /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		45BB77D029FF2100009F129F /* HelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperProtocol.swift; sourceTree = "<group>"; };
 		45BB77D529FF2447009F129F /* ServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceManager.swift; sourceTree = "<group>"; };
-		45BB77D729FF35AB009F129F /* SMC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMC.swift; sourceTree = "<group>"; };
-		45BB77DA29FF35B6009F129F /* SMC+Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMC+Keys.swift"; sourceTree = "<group>"; };
 		45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		45DAB5AA29FDA4A2001A458C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		45DAB5AC29FDB492001A458C /* BatteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryInfo.swift; sourceTree = "<group>"; };
@@ -100,7 +100,6 @@
 			children = (
 				453B267F29FC24B200E2E1E7 /* View+Extension.swift */,
 				45DAB5A029FD9EFA001A458C /* Bundle+Extension.swift */,
-				453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -180,6 +179,7 @@
 		45BB77CF29FF20B9009F129F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				453EA8BA29FF1D0C00D768CB /* Logger+Extension.swift */,
 				45BB77D029FF2100009F129F /* HelperProtocol.swift */,
 			);
 			path = Shared;
@@ -188,8 +188,9 @@
 		45BB77D929FF35AD009F129F /* SMC */ = {
 			isa = PBXGroup;
 			children = (
-				45BB77D729FF35AB009F129F /* SMC.swift */,
-				45BB77DA29FF35B6009F129F /* SMC+Keys.swift */,
+				45877F902A5D323000E61892 /* SMC.swift */,
+				45877F8E2A5D323000E61892 /* SMC+Keys.swift */,
+				45877F8F2A5D323000E61892 /* SMC+Temperature.swift */,
 			);
 			path = SMC;
 			sourceTree = "<group>";
@@ -258,7 +259,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					45BA2BCD29D361C1002DC0B9 = {
 						CreatedOnToolsVersion = 14.3;
@@ -323,10 +324,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45BB77D829FF35AB009F129F /* SMC.swift in Sources */,
 				45BB77CB29FF203E009F129F /* main.swift in Sources */,
+				45877F912A5D36CD00E61892 /* Logger+Extension.swift in Sources */,
 				45BB77D229FF2100009F129F /* HelperProtocol.swift in Sources */,
-				45BB77DB29FF35B6009F129F /* SMC+Keys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +337,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -366,9 +367,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -397,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -426,9 +430,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -455,6 +461,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Bolt/Preview Content\"";
 				DEVELOPMENT_TEAM = 4538W4A79B;
 				ENABLE_HARDENED_RUNTIME = NO;
@@ -466,7 +473,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -484,6 +491,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Bolt/Preview Content\"";
 				DEVELOPMENT_TEAM = 4538W4A79B;
 				ENABLE_HARDENED_RUNTIME = NO;
@@ -495,7 +503,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -508,9 +516,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4538W4A79B;
 				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt.Helper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -521,9 +530,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4538W4A79B;
 				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aayush.opensource.Bolt.Helper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

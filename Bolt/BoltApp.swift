@@ -10,15 +10,15 @@ import SwiftUI
 
 @main
 struct BoltApp: App {
-    @StateObject var boltVM: BoltViewModel = .init()
-    @State var isPresented: Bool = true
+    var boltVM: BoltViewModel = .init()
+    @State private var isPresented: Bool = true
 
     var body: some Scene {
         MenuBarExtra {
             MenuView()
-                .environmentObject(boltVM)
+                .environment(boltVM)
         } label: {
-            Label("Bolt", systemImage: boltVM.limitCharge > 0.95 ? "bolt" : "bolt.fill")
+            Label("Bolt", systemImage: boltVM.bclmValue > 95 ? "bolt" : "bolt.fill")
         }
         .menuBarExtraStyle(.window)
     }

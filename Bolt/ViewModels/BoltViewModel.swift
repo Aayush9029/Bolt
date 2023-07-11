@@ -10,44 +10,59 @@ import IOKit.ps
 import IOKit.pwr_mgt
 import os
 import SwiftUI
+import XPC
 
-final class BoltViewModel: ObservableObject {
-    private lazy var logger = Logger(category: "🔄")
+@Observable class BoltViewModel {
+    var batteryInfo: BatteryInfo? = .init(info: [:])
+    var xpcSessionConnected: Bool = false
 
-    @Published var batteryInfo: BatteryInfo?
-    @Published var limitCharge: CGFloat = 0.0 {
-        didSet { valueChangedSubject.send(limitCharge) }
-    }
+    var bclmValue: Int = 50
 
-    var bclmValue: Int { return Int(limitCharge * 100) }
-
-    private var cancellable: AnyCancellable?
-    private let valueChangedSubject = PassthroughSubject<CGFloat, Never>()
-    private var batteryStatusTimer: Timer?
+    private var logger = Logger(category: "🔄")
+    private var batteryStatusTimer: Timer? = .none
     private var refreshInterval: TimeInterval = 10.0
 
-    init() {
-        cancellable = valueChangedSubject
-            .debounce(for: .seconds(3), scheduler: DispatchQueue.main)
-            .sink { _ in
-                self.updateBCLMValue(newValue: self.bclmValue)
-            }
-        refreshBatteryStatus()
+    private var xpcConnectTimer: Timer? = .none
+    private var xpcConnectInterval: TimeInterval = 30.0
+    private var session: XPCSession? = .none
 
-        batteryStatusTimer = Timer.scheduledTimer(
-            withTimeInterval: refreshInterval,
-            repeats: true
-        ) { _ in
+    init() {
+        refreshBatteryStatus()
+        xpcConnectTimer = Timer.scheduledTimer(withTimeInterval: xpcConnectInterval, repeats: true) { _ in
+            self.connectXPC()
+        }
+        batteryStatusTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { _ in
             self.refreshBatteryStatus()
         }
     }
 
     deinit {
         batteryStatusTimer?.invalidate()
+        xpcConnectTimer?.invalidate()
     }
 
-    private func updateBCLMValue(newValue: Int) {
+    func updateBCLM(newValue: Int) {
         logger.log("Updating BCLM Value : \(newValue)")
+        bclmValue = newValue
+    }
+
+    func connectXPC() {
+        logger.error("Connecting to XPC")
+
+        if xpcSessionConnected {
+            logger.log("Session is already active")
+            xpcConnectTimer?.invalidate()
+        }
+
+        do {
+            session = try .init(xpcService: "xpc.aayush.opensource.bolt")
+            xpcConnectTimer?.invalidate()
+            try session?.activate()
+            xpcSessionConnected = true
+            logger.debug("XPC Service Activated")
+        } catch {
+            logger.error("Couldn't initialize XPC Service \(error.localizedDescription)")
+        }
     }
 
     func refreshBatteryStatus() {

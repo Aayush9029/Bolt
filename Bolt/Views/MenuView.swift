@@ -9,9 +9,10 @@ import MacControlCenterUI
 import SwiftUI
 
 struct MenuView: View {
-    @EnvironmentObject var boltVM: BoltViewModel
+    @Environment(BoltViewModel.self) var boltVM
 
 //    if option key was help show it
+    @State private var silderValue: CGFloat = 0.45
     @State private var showDetails: Bool = true
     @State private var isPresented: Bool = false
 
@@ -19,9 +20,12 @@ struct MenuView: View {
         MacControlCenterMenu(isPresented: $isPresented) {
             MenuSection("Limit Charging", divider: false)
             MenuSlider(
-                value: $boltVM.limitCharge,
-                image: Image(systemName: boltVM.bclmValue > 95 ? "battery.100.bolt" : "battery.75")
+                value: $silderValue,
+                image: Image(systemName: silderValue > 95 ? "battery.100.bolt" : "battery.75")
             )
+            .onChange(of: silderValue) { _, newValue in
+                boltVM.updateBCLM(newValue: Int(newValue * 100))
+            }
 
             MenuSection("Current Information")
             HStack {
@@ -29,7 +33,7 @@ struct MenuView: View {
                     .foregroundStyle(.secondary)
                 Spacer()
                 Group {
-                    if boltVM.limitCharge < 0.95 {
+                    if boltVM.bclmValue < 95 {
                         Text(String(boltVM.bclmValue) + "%")
                             .foregroundStyle(.primary)
                     } else {
@@ -116,6 +120,6 @@ struct MenuView_Previews: PreviewProvider {
         MenuView()
             .frame(width: 320)
             .padding(.vertical)
-            .environmentObject(BoltViewModel())
+            .environment(BoltViewModel())
     }
 }
