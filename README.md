@@ -1,6 +1,7 @@
 
 
-> **Warning** Bolt is currently in development and not yet ready for use. Check back later for alpha release, contributions are welcome.
+> **Warning**
+>  Bolt is currently in development and not yet ready for use. Check back later for alpha release, contributions are welcome.
 
 
 <p align="center">
