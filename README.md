@@ -1,7 +1,7 @@
 
 
 > **Warning**
->  Bolt is currently in development and not yet ready for use. Check back later for alpha release, contributions are welcome.
+>  Bolt is currently in development, alpha testing is open.
 
 
 <p align="center">
