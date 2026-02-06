@@ -13,7 +13,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/orchetect/MenuBarExtraAccess", from: "1.0.3")
+        .package(url: "https://github.com/orchetect/MenuBarExtraAccess", from: "1.2.2")
     ],
     targets: [
         .target(
