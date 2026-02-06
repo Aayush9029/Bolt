@@ -7,44 +7,67 @@
 
 import Foundation
 import os
-import XPC
 
-let helperServer = HelperServer()
+let logger = Logger(
+    subsystem: "com.aayush.opensource.Bolt.Helper",
+    category: "main"
+)
 
-class HelperServer {
-    var xpcSessionConnected: Bool = false
-    private let logger = Logger(category: "🌐")
+// MARK: - Open SMC connection with retry
 
-    private var xpcConnectTimer: Timer? = .none
-    private var xpcConnectInterval: TimeInterval = 30.0
-    private var session: XPCSession? = .none
-    private var listener: XPCListener? = .none
-
-    init() {
-        xpcConnectTimer = Timer.scheduledTimer(withTimeInterval: xpcConnectInterval, repeats: true) { _ in
-            self.connectXPC()
+func openSMCWithRetry(attempts: Int = 3) {
+    var currentAttempt = 0
+    while currentAttempt < attempts {
+        do {
+            try SMCKit.open()
+            logger.info("SMC connection opened successfully")
+            return
+        } catch {
+            currentAttempt += 1
+            logger.error("SMC open attempt \(currentAttempt)/\(attempts) failed: \(error.localizedDescription)")
+            if currentAttempt < attempts {
+                Thread.sleep(forTimeInterval: 1.0)
+            }
         }
     }
+    logger.critical("Failed to open SMC after \(attempts) attempts")
+}
 
-    func connectXPC() {
-        logger.error("Connecting to XPC")
+// MARK: - XPC Listener Delegate
 
-        if xpcSessionConnected {
-            logger.log("Session is already active")
-            xpcConnectTimer?.invalidate()
+class HelperListenerDelegate: NSObject, NSXPCListenerDelegate {
+    func listener(
+        _ listener: NSXPCListener,
+        shouldAcceptNewConnection newConnection: NSXPCConnection
+    ) -> Bool {
+        logger.info("Accepting new XPC connection")
+
+        newConnection.exportedInterface = NSXPCInterface(with: HelperToolProtocol.self)
+        newConnection.exportedObject = HelperXPCHandler()
+
+        newConnection.invalidationHandler = {
+            logger.info("XPC connection invalidated")
+        }
+        newConnection.interruptionHandler = {
+            logger.warning("XPC connection interrupted")
         }
 
-        do {
-            session = try .init(xpcService: "xpc.aayush.opensource.bolt")
-            listener = try .init(service: "xpc.aayush.opensource.bolt", incomingSessionHandler: { _ in
-
-            })
-            xpcConnectTimer?.invalidate()
-            try session?.activate()
-            xpcSessionConnected = true
-            logger.debug("XPC Service Activated")
-        } catch {
-            logger.error("Couldn't initialize XPC Service \(error.localizedDescription)")
-        }
+        newConnection.resume()
+        return true
     }
 }
+
+// MARK: - Start
+
+logger.info("BoltHelper starting (version \(helperVersion))")
+
+openSMCWithRetry()
+
+let delegate = HelperListenerDelegate()
+let listener = NSXPCListener(machServiceName: "com.aayush.opensource.Bolt.Helper.mach")
+listener.delegate = delegate
+listener.resume()
+
+logger.info("XPC listener active on com.aayush.opensource.Bolt.Helper.mach")
+
+RunLoop.main.run()

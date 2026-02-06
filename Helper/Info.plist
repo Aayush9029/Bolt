@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.aayush.opensource.Bolt.Helper</string>
+	<key>CFBundleName</key>
+	<string>BoltHelper</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>identifier "com.aayush.opensource.Bolt" and anchor apple generic and certificate leaf[subject.OU] = "4538W4A79B"</string>
+	</array>
+</dict>
+</plist>

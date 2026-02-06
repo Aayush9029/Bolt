@@ -10,6 +10,9 @@ import os
 
 extension Logger {
     init(category: String) {
-        self.init(subsystem: Bundle.main.bundleIdentifier!, category: category)
+        self.init(
+            subsystem: Bundle.main.bundleIdentifier ?? "com.aayush.opensource.Bolt.Helper",
+            category: category
+        )
     }
 }

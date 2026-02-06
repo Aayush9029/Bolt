@@ -11,45 +11,85 @@ import SwiftUI
 struct MenuView: View {
     @Environment(BoltViewModel.self) var boltVM
 
-//    if option key was help show it
-    @State private var silderValue: CGFloat = 0.45
-    @State private var showDetails: Bool = true
     @State private var isPresented: Bool = false
+    @State private var showDetails: Bool = true
 
     var body: some View {
+        @Bindable var vm = boltVM
+
         MacControlCenterMenu(isPresented: $isPresented) {
-            MenuSection("Limit Charging", divider: false)
-            MenuSlider(
-                value: $silderValue,
-                image: Image(systemName: silderValue > 95 ? "battery.100.bolt" : "battery.75")
-            )
-            .onChange(of: silderValue) { _, newValue in
-                boltVM.updateBCLM(newValue: Int(newValue * 100))
+            // MARK: - Helper Status
+            if !boltVM.isHelperRunning {
+                MenuSection("Helper Required", divider: false)
+                MenuCommand("Install Helper Daemon") {
+                    boltVM.installHelper()
+                }
+                Text("The privileged helper is needed to control charging.\nApprove it in System Settings → Login Items.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 14)
+                    .padding(.bottom, 4)
+                Divider()
             }
 
-            MenuSection("Current Information")
+            // MARK: - Charge Limit Slider
+            MenuSection("Charge Limit", divider: false)
+            MenuSlider(
+                value: Binding(
+                    get: { CGFloat(boltVM.bclmValue) / 100.0 },
+                    set: { vm.bclmValue = max(20, min(100, Int($0 * 100))) }
+                ),
+                image: Image(systemName: boltVM.bclmValue >= 100 ? "battery.100.bolt" : "battery.75")
+            )
+
+            // MARK: - Current Info
+            MenuSection("Status")
             HStack {
                 Text("Charge Limit")
                     .foregroundStyle(.secondary)
                 Spacer()
-                Group {
-                    if boltVM.bclmValue < 95 {
-                        Text(String(boltVM.bclmValue) + "%")
-                            .foregroundStyle(.primary)
-                    } else {
-                        Text("Disabled")
-                            .foregroundStyle(.tertiary)
-                    }
+                if boltVM.bclmValue < 100 {
+                    Text("\(boltVM.bclmValue)%")
+                        .foregroundStyle(.primary)
+                } else {
+                    Text("Disabled")
+                        .foregroundStyle(.tertiary)
                 }
             }
+
             if let info = boltVM.batteryInfo {
                 HStack {
-                    Text("Current Capacity")
+                    Text("Battery")
                         .foregroundStyle(.secondary)
                     Spacer()
                     Text("\(info.currentCapacity ?? 0)%")
                         .foregroundStyle(.primary)
                 }
+
+                HStack {
+                    Text("Charging")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    if boltVM.chargingInhibited {
+                        Text("Inhibited")
+                            .foregroundStyle(.orange)
+                    } else if info.isCharging == true {
+                        Text("Active")
+                            .foregroundStyle(.green)
+                    } else {
+                        Text("Not Charging")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                HStack {
+                    Text("Power Source")
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(info.powerSourceState ?? "Unknown")
+                        .foregroundStyle(.primary)
+                }
+
                 if let time = info.timeToEmptyFormatted() {
                     HStack {
                         Text("Time Till Empty")
@@ -60,8 +100,10 @@ struct MenuView: View {
                     }
                 }
             }
+
+            // MARK: - Battery Details
             if showDetails {
-                MenuSection("Battery Information")
+                MenuSection("Battery Details")
                 VStack(spacing: 6) {
                     if let info = boltVM.batteryInfo {
                         ForEach(info.properties, id: \.key) { item in
@@ -78,28 +120,19 @@ struct MenuView: View {
                     }
                 }
             }
+
             Divider()
 
             MenuCommand("About Bolt...") {
                 showStandardAboutWindow()
             }
-        }
-    }
 
-    // View Example
-    @ViewBuilder
-    private func MaxChargeSlider() -> some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Label(boltVM.bclmValue > 95 ? "Full Charge" : "Charge Limit", systemImage: boltVM.bclmValue > 95 ? "battery.100.bolt" : "battery.75")
-                Spacer()
-                Text("\(boltVM.bclmValue)%")
-                    .foregroundStyle(.secondary)
+            MenuCommand("Quit Bolt") {
+                // Reset charging to normal before quitting
+                ServiceManager.instance.setResetValues()
+                NSApp.terminate(nil)
             }
-
-            MenuSlider(value: .constant(0.50), image: Image(systemName: "bolt.fill"))
         }
-        .ccGlassButton()
     }
 
     func showStandardAboutWindow() {
@@ -108,10 +141,6 @@ struct MenuView: View {
             to: nil,
             from: nil
         )
-    }
-
-    func isOptionkeyPressed() -> Bool {
-        return NSApp.currentEvent?.modifierFlags.contains(.option) == true
     }
 }
 

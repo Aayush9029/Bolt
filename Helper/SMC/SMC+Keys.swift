@@ -1,10 +1,3 @@
-//
-//  SMC+Keys.swift
-//  Helper
-//
-//  Created by Adam on 23/04/2023.
-//
-
 import Foundation
 
 extension SMCKey {
@@ -26,6 +19,16 @@ extension SMCKey {
     static let lidClosed = Self(
         code: .init(fromStaticString: "MSLD"),
         info: DataTypes.UInt8
+    )
+
+    static let batteryChargeMax = Self(
+        code: .init(fromStaticString: "BCLM"),
+        info: DataTypes.UInt8
+    )
+
+    static let batteryRemainingCharge = Self(
+        code: .init(fromStaticString: "BRSC"),
+        info: DataTypes.UInt32
     )
 }
 

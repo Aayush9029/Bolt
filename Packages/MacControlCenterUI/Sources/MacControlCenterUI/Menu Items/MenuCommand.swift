@@ -1,8 +1,10 @@
 //
 //  MenuCommand.swift
 //  MacControlCenterUI • https://github.com/orchetect/MacControlCenterUI
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2024 Steffan Andrews • Licensed under MIT License
 //
+
+#if os(macOS)
 
 import AppKit
 import SwiftUI
@@ -17,26 +19,39 @@ import SwiftUI
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public struct MenuCommand<Label: View>: View, MacControlCenterMenuItem {
+    // MARK: Environment
+    
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.isMenuBarExtraPresented) private var menuBarExtraIsPresented
+    @Environment(\.isEnabled) private var isEnabled
     
-    public var label: Label
-    public var action: (() -> Void)
-    public var activatesApp: Bool = true
-    public var dismissesMenu: Bool = true
-    public var style: MenuCommandStyle = .controlCenter
+    // MARK: Private State
     
-    @State public var isHighlighted: Bool = false
+    private let label: @MainActor (_ action: @MainActor @escaping () -> Void) -> Label
+    private let action: @MainActor () -> Void
+    var activatesApp: Bool
+    var dismissesMenu: Bool
+    var style: MenuCommandStyle = .controlCenter
+    var height: MenuItemSize = .standardTextOnly
+    var spacing: CGFloat
+    @State private var isHighlighted: Bool = false
     
     // MARK: Init
     
+    @_disfavoredOverload
     public init<S>(
         _ title: S,
+        style: MenuCommandStyle = .controlCenter,
+        height: MenuItemSize = .standardTextOnly,
+        spacing: CGFloat = 0,
         activatesApp: Bool = true,
         dismissesMenu: Bool = true,
-        action: @escaping (() -> Void)
+        action: @MainActor @escaping () -> Void
     ) where S: StringProtocol, Label == Text {
-        self.label = Text(title)
+        label = { _ in Text(title) }
+        self.style = style
+        self.height = height
+        self.spacing = spacing
         self.activatesApp = activatesApp
         self.dismissesMenu = dismissesMenu
         self.action = action
@@ -44,23 +59,73 @@ public struct MenuCommand<Label: View>: View, MacControlCenterMenuItem {
     
     public init(
         _ titleKey: LocalizedStringKey,
+        style: MenuCommandStyle = .controlCenter,
+        height: MenuItemSize = .standardTextOnly,
+        spacing: CGFloat = 0,
         activatesApp: Bool = true,
         dismissesMenu: Bool = true,
-        action: @escaping (() -> Void)
+        action: @MainActor @escaping () -> Void
     ) where Label == Text {
-        self.label = Text(titleKey)
+        label = { _ in Text(titleKey) }
+        self.style = style
+        self.height = height
+        self.spacing = spacing
+        self.activatesApp = activatesApp
+        self.dismissesMenu = dismissesMenu
+        self.action = action
+    }
+    
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
+    @_disfavoredOverload
+    public init(
+        _ titleResource: LocalizedStringResource,
+        style: MenuCommandStyle = .controlCenter,
+        height: MenuItemSize = .standardTextOnly,
+        spacing: CGFloat = 0,
+        activatesApp: Bool = true,
+        dismissesMenu: Bool = true,
+        action: @MainActor @escaping () -> Void
+    ) where Label == Text {
+        label = { _ in Text(titleResource) }
+        self.style = style
+        self.height = height
+        self.spacing = spacing
         self.activatesApp = activatesApp
         self.dismissesMenu = dismissesMenu
         self.action = action
     }
     
     public init(
-        action: @escaping (() -> Void),
+        style: MenuCommandStyle = .controlCenter,
+        height: MenuItemSize = .standardTextOnly,
+        spacing: CGFloat = 0,
         activatesApp: Bool = true,
         dismissesMenu: Bool = true,
-        @ViewBuilder label: () -> Label
+        action: @MainActor @escaping () -> Void,
+        @ViewBuilder label: @MainActor @escaping () -> Label
     ) {
-        self.label = label()
+        self.label = { _ in label() }
+        self.style = style
+        self.height = height
+        self.spacing = spacing
+        self.activatesApp = activatesApp
+        self.dismissesMenu = dismissesMenu
+        self.action = action
+    }
+    
+    public init(
+        style: MenuCommandStyle = .controlCenter,
+        height: MenuItemSize = .standardTextOnly,
+        spacing: CGFloat = 0,
+        activatesApp: Bool = true,
+        dismissesMenu: Bool = true,
+        action: @MainActor @escaping () -> Void,
+        @ViewBuilder label: @MainActor @escaping (_ action: @MainActor @escaping () -> Void) -> Label
+    ) {
+        self.label = label
+        self.style = style
+        self.height = height
+        self.spacing = spacing
         self.activatesApp = activatesApp
         self.dismissesMenu = dismissesMenu
         self.action = action
@@ -71,50 +136,59 @@ public struct MenuCommand<Label: View>: View, MacControlCenterMenuItem {
     public var body: some View {
         HighlightingMenuItem(
             style: style,
-            height: .standardTextOnly,
+            height: height,
             isHighlighted: $isHighlighted
         ) {
-            HStack {
-                label
-                    .foregroundColor(style.textColor(hover: isHighlighted))
-                Spacer()
+            commandBody
+                .allowsHitTesting(isEnabled)
+                .onTapGesture {
+                    guard isEnabled else { return }
+                    userTapped()
+                }
+        }
+    }
+    
+    private var commandBody: some View {
+        ZStack(alignment: .leading) {
+            Color.clear
+            
+            VStack(alignment: .leading, spacing: spacing) {
+                label(userTapped)
             }
         }
-        .onTapGesture {
-            switch style {
-            case .menu:
-                // classic NSMenu-style menu commands still blink on click, as of Ventura
-                blinkThenCallAction()
-            case .controlCenter:
-                // Control Center menu commands don't blink because Apple is boring and hates charm
-                callAction()
-            }
-        }
+        .contentShape(Rectangle())
     }
     
     // MARK: Helpers
     
-    private func blinkThenCallAction() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+    private func userTapped() {
+        func go() {
+            if activatesApp {
+                NSApp.activate(ignoringOtherApps: true)
+            }
+            
+            Task {
+                if dismissesMenu {
+                    menuBarExtraIsPresented.wrappedValue = false
+                    // wait a small amount to give the menu a chance to close before calling the action block
+                    try? await Task.sleep(seconds: 0.100) // 100 ms
+                }
+                
+                action()
+            }
+        }
+        
+        // classic NSMenu-style menu commands still blink on click.
+        // for one or two macOS releases macOS 12 (I believe, for one), Control Center style menu commands did not blink,
+        // but at some point (macOS 14 or 15) Apple added this behavior back in to match the NSMenu behavior.
+        Task {
             isHighlighted = false
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            try? await Task.sleep(seconds: 0.080) // 80 ms
             isHighlighted = true
+            try? await Task.sleep(seconds: 0.080) // 80 ms
+            go()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            callAction()
-        }
-    }
-    
-    private func callAction() {
-        if activatesApp {
-            NSApp.activate(ignoringOtherApps: true)
-        }
-        
-        if dismissesMenu {
-            menuBarExtraIsPresented.wrappedValue = false
-        }
-        
-        action()
     }
 }
+
+#endif

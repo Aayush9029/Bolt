@@ -1,14 +1,13 @@
 # Mac Control Center UI
 
-[![Platforms - macOS 11+](https://img.shields.io/badge/platforms-macOS%2011+-lightgrey.svg?style=flat)](https://developer.apple.com/swift) ![Swift 5.3-5.8](https://img.shields.io/badge/Swift-5.3–5.8-orange.svg?style=flat) [![Xcode 13-14](https://img.shields.io/badge/Xcode-13–14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MacControlCenterUI/blob/main/LICENSE)
+[![Platforms | macOS 11](https://img.shields.io/badge/platforms-macOS%2011-blue.svg?style=flat)](https://developer.apple.com/swift) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FMacControlCenterUI%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/MacControlCenterUI) [![Xcode 14](https://img.shields.io/badge/Xcode-14-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/MacControlCenterUI/blob/main/LICENSE)
 
-<img align="right" width="40%" src="Images/demo.png" alt="Example">
+<img align="right" width="40%" src="Images/screenshot.png" alt="Example Screeshot">
 
 
+A **menu builder** and **suite of SwiftUI controls** that closely mimics the look, feel, and animations of **macOS Control Center** menus.
 
-A **menu builder** and **suite of SwiftUI controls** that closely mimic the feel of **macOS Control Center** menus.
-
-Integrates seamlessly with Swift's new `MenuBarExtra`.
+Integrates seamlessly with SwiftUI's `MenuBarExtra`.
 
 Both **Dark** and **Light Mode** are fully supported.
 
@@ -27,7 +26,7 @@ Both **Dark** and **Light Mode** are fully supported.
    - In a Swift Package, add it to the Package.swift dependencies:
 
      ```swift
-     .package(url: "https://github.com/orchetect/MacControlCenterUI", from: "2.0.0")
+     .package(url: "https://github.com/orchetect/MacControlCenterUI", from: "2.7.0")
      ```
 
 2. Import the library:
@@ -40,13 +39,14 @@ Both **Dark** and **Light Mode** are fully supported.
 
 ## Requirements
 
-Minimum requirements to compile: Xcode 13 on macOS 11 Big Sur or newer.
+Minimum requirements to compile: Xcode 14 on macOS 12.5 or newer.
 
 Supports macOS 11.0+ once compiled.
 
 ## Known Issues
 
-Due to the lacklustre implementation of Apple's `MenuBarExtra`, it is currently not possible to get smooth window resize animations without a tremendous amount of work. For that reason, most MacControlCenterUI controls whose Control Center counterparts use animation will instead use safer static view size changes.
+- Due to the lacklustre implementation of window resize behavior in SwiftUI, animations are kept to a bare minimum on macOS 15 and earlier. macOS 26 introduces improvements to how SwiftUI resizes windows as a result of animating view size changes, and these benefits will be conditionally available in this library when running on macOS 26.
+
 
 ## Author
 
@@ -59,6 +59,13 @@ Licensed under the MIT license. See [LICENSE](https://github.com/orchetect/MacCo
 ## Sponsoring
 
 If you enjoy using MacControlCenterUI and want to contribute to open-source financially, GitHub sponsorship is much appreciated. Feedback and code contributions are also welcome.
+
+## Community & Support
+
+Please do not email maintainers for technical support. Several options are available for issues and questions:
+
+- Questions and feature ideas can be posted to [Discussions](https://github.com/orchetect/MacControlCenterUI/discussions).
+- If an issue is a verifiable bug with reproducible steps it may be posted in [Issues](https://github.com/orchetect/MacControlCenterUI/issues).
 
 ## Contributions
 

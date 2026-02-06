@@ -1,8 +1,10 @@
 //
 //  MenuDisclosureGroup.swift
 //  MacControlCenterUI • https://github.com/orchetect/MacControlCenterUI
-//  © 2022 Steffan Andrews • Licensed under MIT License
+//  © 2024 Steffan Andrews • Licensed under MIT License
 //
+
+#if os(macOS)
 
 import SwiftUI
 
@@ -13,17 +15,25 @@ import SwiftUI
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
 public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
+    // MARK: Public Properties
+    
     public var style: MenuDisclosureGroupStyle
     public var labelHeight: MenuItemSize
     public var toggleVisibility: ControlVisibility
     public var label: Label
-    public var fullLabelToggle: Bool
+    public var isFullLabelToggle: Bool
     public var content: [any View]
     @Binding public var isExpandedBinding: Bool
-    @State private var isExpanded: Bool
     
+    // MARK: Environment
+    
+    @Environment(\.isEnabled) private var isEnabled
+    
+    // MARK: Private State
+    
+    @State private var isExpanded: Bool
     @State private var isPressed: Bool = false
-    @State private var isHighlighted = false
+    @State private var isHighlighted: Bool = false
     
     // MARK: Init - With Binding
     
@@ -37,10 +47,10 @@ public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
         @MacControlCenterMenuBuilder content: () -> [any View]
     ) {
         self.style = style
-        self._isExpandedBinding = isExpanded
-        self._isExpanded = State(initialValue: isExpanded.wrappedValue)
+        _isExpandedBinding = isExpanded
+        _isExpanded = State(initialValue: isExpanded.wrappedValue)
         self.labelHeight = labelHeight
-        self.fullLabelToggle = fullLabelToggle
+        self.isFullLabelToggle = fullLabelToggle
         self.toggleVisibility = toggleVisibility
         self.label = label()
         self.content = content()
@@ -58,10 +68,10 @@ public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
         @MacControlCenterMenuBuilder content: () -> [any View]
     ) {
         self.style = style
-        self._isExpandedBinding = .constant(initiallyExpanded)
-        self._isExpanded = State(initialValue: initiallyExpanded)
+        _isExpandedBinding = .constant(initiallyExpanded)
+        _isExpanded = State(initialValue: initiallyExpanded)
         self.labelHeight = labelHeight
-        self.fullLabelToggle = fullLabelToggle
+        self.isFullLabelToggle = fullLabelToggle
         self.toggleVisibility = toggleVisibility
         self.label = label()
         self.content = content()
@@ -71,25 +81,31 @@ public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
     
     public var body: some View {
         viewBody
+            .geometryGroupIfSupportedByPlatform()
             .onChange(of: isExpandedBinding) { newValue in
-                isExpanded = newValue
+                withAnimation(.macControlCenterMenuResize) { isExpanded = newValue }
             }
             .onChange(of: isExpanded) { newValue in
-                isExpandedBinding = newValue
+                withAnimation(.macControlCenterMenuResize) { isExpandedBinding = newValue }
             }
     }
     
     @ViewBuilder
     public var viewBody: some View {
-        if fullLabelToggle {
-            highlightingButtonLabelContent
-        } else {
-            regularLabelContent
-        }
-        
-        if isExpanded {
-            expandedContent
-                .frame(maxWidth: .infinity)
+        VStack(alignment: .leading, spacing: 0) {
+            Group {
+                if isFullLabelToggle {
+                    highlightingButtonLabelContent
+                } else {
+                    regularLabelContent
+                }
+            }
+            .geometryGroupIfSupportedByPlatform()
+            .animation(nil, value: isExpanded)
+            
+            if isExpanded {
+                expandedContent
+            }
         }
     }
     
@@ -99,14 +115,16 @@ public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
         HighlightingMenuStateItem(
             style: .controlCenter,
             height: labelHeight,
-            isOn: $isExpanded,
+            isOn: $isExpanded.animation(.macControlCenterMenuResize),
             isHighlighted: $isHighlighted,
             isPressed: $isPressed
         ) {
             HStack {
-                label
+                labelFormatted
                 Spacer()
-                chevron
+                if isChevronVisible {
+                    MenuDisclosureChevron(isExpanded: $isExpanded.animation(.macControlCenterMenuResize))
+                }
             }
         }
     }
@@ -114,68 +132,68 @@ public struct MenuDisclosureGroup<Label: View>: View, MacControlCenterMenuItem {
     private var regularLabelContent: some View {
         ZStack {
             HStack {
-                label
+                labelFormatted
             }
             HStack(spacing: 0) {
                 Spacer()
-                chevron
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        isExpanded.toggle()
-                    }
+                if isChevronVisible {
+                    MenuDisclosureChevron(isExpanded: $isExpanded.animation(.macControlCenterMenuResize))
+                }
                 Spacer()
                     .frame(width: MenuGeometry.menuHorizontalContentInset)
             }
         }
         .onHover { state in
+            guard isEnabled else { return }
             isHighlighted = state
+        }
+        .onChange(of: isEnabled) { newValue in
+            if !isEnabled {
+                isHighlighted = false
+            }
         }
     }
     
-    @ViewBuilder
-    private var chevron: some View {
-        if isExpanded || isHighlighted || toggleVisibility == .always {
-            Image(systemName: "chevron.right")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 10, height: 10)
-                .foregroundColor(.primary)
-                .rotationEffect(isExpanded ? .degrees(90) : .zero)
-            //.animation(.default, value: isExpanded)
-        }
+    private var labelFormatted: some View {
+        label.opacity(isEnabled ? 1.0 : 0.4)
+    }
+    
+    private var isChevronVisible: Bool {
+        guard toggleVisibility != .never else { return false }
+        return isExpanded || isHighlighted || toggleVisibility == .always
     }
     
     @ViewBuilder
     private var expandedContent: some View {
-        switch style {
-        case .section:
-            MenuBody(content: content)
-        case .menuItem:
-            FullWidthMenuItem {
-                VStack(spacing: 0) {
-                    Rectangle()
-                        .fill(.gray.opacity(0.5))
-                        .frame(height: 1)
-                    
-                    ZStack {
-                        Rectangle().fill(.gray.opacity(0.15))
-                        MenuBody(content: content)
+        FullWidthMenuItem(verticalPadding: false) {
+            Group {
+                switch style {
+                case .section:
+                    MenuBody(content: content)
+                case .menuItem:
+                    FullWidthMenuItem {
+                        VStack(spacing: 0) {
+                            Rectangle()
+                                .fill(.gray.opacity(0.5))
+                                .frame(height: 1)
+                            
+                            ZStack {
+                                Rectangle().fill(.gray.opacity(0.15))
+                                MenuBody(content: content)
+                            }
+                            .padding([.top, .bottom], 1)
+                            
+                            Rectangle()
+                                .fill(.gray.opacity(0.7))
+                                .frame(height: 1)
+                        }
                     }
-                    .padding([.top, .bottom], 1)
-                    
-                    Rectangle()
-                        .fill(.gray.opacity(0.7))
-                        .frame(height: 1)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .scrollDisabledIfSupportedByPlatform(false) // counterbalance to `true` in viewBody
         }
     }
 }
 
-public enum MenuDisclosureGroupStyle {
-    /// Section style: Expanded content body has no added background (transparent).
-    case section
-    
-    /// Menu item style: Expanded content body has a shaded background.
-    case menuItem
-}
+#endif

@@ -5,6 +5,7 @@
 //  Created by Aayush Pokharel on 2023-04-30.
 //
 
+import IOKit.ps
 import IOKit.pwr_mgt
 import os
 import ServiceManagement
@@ -15,8 +16,6 @@ final class ServiceManager {
     private lazy var logger = Logger(category: "🍎")
     static let instance = ServiceManager()
     
-    public var delegate: HelperDelegate?
-    private var smcKey: String?
     private var preventSleepID: IOPMAssertionID?
     public var chargingEnabled: Bool = true
     public var helperRunning: Bool = false
@@ -108,13 +107,6 @@ final class ServiceManager {
     
     @objc func writeMaxBatteryCharge(setVal: UInt8) {
         SMCWriteByte(key: "BCLM", value: setVal)
-    }
-    
-    @objc func readMaxBatteryCharge() {
-        SMCReadByte(key: "BCLM") { value in
-            print("OLD KEY MAX CHARGE: " + String(value))
-            self.delegate?.OnMaxBatRead(value: value)
-        }
     }
     
     @objc func enableCharging(enabled: Bool) {
@@ -221,10 +213,6 @@ final class ServiceManager {
         helper?.releaseAssertion(assertionID: assertionID)
     }
     
-    func isRoot() -> Bool {
-        return NSUserName() == "root"
-    }
-    
     // MARK: - Private Functions
     
     private func register(_ service: SMAppService) {
@@ -244,11 +232,6 @@ final class ServiceManager {
     }
     
     private func unregister(_ service: SMAppService) {
-        if !isRoot() {
-            logger.error("Must be root to unregister \(service.description)")
-            return
-        }
-        logger.error("MIGHT BE ABLE TO REMOVE isROOT()  SINCE BAT-FI DOESN'T USE IT")
         if service.status == .enabled {
             do {
                 try service.unregister()
@@ -259,13 +242,8 @@ final class ServiceManager {
             logger.info("\(service.description) status: \(service)")
         }
     }
-    
+
     private func status(_ service: SMAppService) {
         logger.info("\(service.description) status: \(service)")
     }
-}
-
-protocol HelperDelegate {
-    func OnMaxBatRead(value: UInt8)
-    func updateStatus(status: String)
 }

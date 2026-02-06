@@ -9,61 +9,134 @@ import Combine
 import IOKit.ps
 import IOKit.pwr_mgt
 import os
+import ServiceManagement
 import SwiftUI
-import XPC
 
 @Observable class BoltViewModel {
     var batteryInfo: BatteryInfo? = .init(info: [:])
-    var xpcSessionConnected: Bool = false
+    var bclmValue: Int {
+        didSet {
+            UserDefaults.standard.set(bclmValue, forKey: "bclmValue")
+            applyChargeLimit()
+        }
+    }
 
-    var bclmValue: Int = 50
+    var helperStatus: SMAppService.Status = .notFound
+    var chargingInhibited: Bool = false
 
-    private var logger = Logger(category: "🔄")
-    private var batteryStatusTimer: Timer? = .none
-    private var refreshInterval: TimeInterval = 10.0
-
-    private var xpcConnectTimer: Timer? = .none
-    private var xpcConnectInterval: TimeInterval = 30.0
-    private var session: XPCSession? = .none
+    private var logger = Logger(category: "ViewModel")
+    private var batteryStatusTimer: Timer?
+    private var helperCheckTimer: Timer?
 
     init() {
+        let saved = UserDefaults.standard.integer(forKey: "bclmValue")
+        bclmValue = saved > 0 ? saved : 80
+
         refreshBatteryStatus()
-        xpcConnectTimer = Timer.scheduledTimer(withTimeInterval: xpcConnectInterval, repeats: true) { _ in
-            self.connectXPC()
+        refreshHelperStatus()
+
+        batteryStatusTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
+            self?.refreshBatteryStatus()
+            self?.evaluateCharging()
         }
-        batteryStatusTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { _ in
-            self.refreshBatteryStatus()
+
+        helperCheckTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { [weak self] _ in
+            self?.refreshHelperStatus()
         }
+
+        checkHelperAndReadBCLM()
     }
 
     deinit {
         batteryStatusTimer?.invalidate()
-        xpcConnectTimer?.invalidate()
+        helperCheckTimer?.invalidate()
     }
 
-    func updateBCLM(newValue: Int) {
-        logger.log("Updating BCLM Value : \(newValue)")
-        bclmValue = newValue
+    // MARK: - Helper Management
+
+    func refreshHelperStatus() {
+        helperStatus = ServiceManager.instance.loginPrivilegedDaemon.status
+        logger.debug("Helper status: \(String(describing: self.helperStatus))")
     }
 
-    func connectXPC() {
-        logger.error("Connecting to XPC")
+    var isHelperRunning: Bool {
+        helperStatus == .enabled
+    }
 
-        if xpcSessionConnected {
-            logger.log("Session is already active")
-            xpcConnectTimer?.invalidate()
+    func installHelper() {
+        ServiceManager.instance.registerDaemons()
+        refreshHelperStatus()
+    }
+
+    func removeHelper() {
+        ServiceManager.instance.removeDaemons()
+        refreshHelperStatus()
+    }
+
+    // MARK: - BCLM / Charging Control
+
+    func applyChargeLimit() {
+        guard isHelperRunning else {
+            logger.warning("Helper not running, cannot apply charge limit")
+            return
         }
 
-        do {
-            session = try .init(xpcService: "xpc.aayush.opensource.bolt")
-            xpcConnectTimer?.invalidate()
-            try session?.activate()
-            xpcSessionConnected = true
-            logger.debug("XPC Service Activated")
-        } catch {
-            logger.error("Couldn't initialize XPC Service \(error.localizedDescription)")
+        logger.info("Setting BCLM to \(self.bclmValue)")
+        ServiceManager.instance.writeMaxBatteryCharge(setVal: UInt8(min(bclmValue, 100)))
+        evaluateCharging()
+    }
+
+    func evaluateCharging() {
+        guard isHelperRunning else { return }
+        guard let info = batteryInfo, let capacity = info.currentCapacity else { return }
+
+        if bclmValue >= 100 {
+            // No limit — ensure charging is enabled, reset keys
+            if chargingInhibited {
+                ServiceManager.instance.setResetValues()
+                chargingInhibited = false
+                logger.info("Charge limit disabled, charging enabled")
+            }
+            return
+        }
+
+        if capacity >= bclmValue {
+            // At or above limit — inhibit charging
+            if !chargingInhibited {
+                ServiceManager.instance.enableCharging(enabled: false)
+                chargingInhibited = true
+                logger.info("Battery at \(capacity)% >= limit \(self.bclmValue)%, inhibiting charging")
+            }
+        } else {
+            // Below limit — allow charging
+            if chargingInhibited {
+                ServiceManager.instance.enableCharging(enabled: true)
+                chargingInhibited = false
+                logger.info("Battery at \(capacity)% < limit \(self.bclmValue)%, allowing charging")
+            }
         }
     }
+
+    private func checkHelperAndReadBCLM() {
+        ServiceManager.instance.checkHelperVersion { [weak self] running in
+            guard let self, running else { return }
+            ServiceManager.instance.SMCReadByte(key: "BCLM") { value in
+                DispatchQueue.main.async {
+                    if value > 0 && value <= 100 {
+                        self.logger.info("Read BCLM from SMC: \(value)")
+                        // Only use SMC value if user hasn't set one yet
+                        let saved = UserDefaults.standard.integer(forKey: "bclmValue")
+                        if saved == 0 {
+                            self.bclmValue = Int(value)
+                        }
+                    }
+                    self.evaluateCharging()
+                }
+            }
+        }
+    }
+
+    // MARK: - Battery Status
 
     func refreshBatteryStatus() {
         let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()

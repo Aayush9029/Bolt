@@ -1,0 +1,37 @@
+//
+//  Menu Constants.swift
+//  MacControlCenterUI • https://github.com/orchetect/MacControlCenterUI
+//  © 2024 Steffan Andrews • Licensed under MIT License
+//
+
+#if os(macOS)
+
+import SwiftUI
+
+nonisolated
+enum MenuGeometry {
+    static let menuItemStandardHoverForeColor = Color(NSColor.selectedMenuItemTextColor)
+    static let menuItemStandardHoverBackColor = Color(NSColor.selectedContentBackgroundColor)
+    
+    static let menuHorizontalContentInset: CGFloat = 14
+
+    static var menuHorizontalHighlightInset: CGFloat {
+        if #available(macOS 26, *) {
+            return 6
+        } else {
+            return 4
+        }
+    }
+
+    static let menuVerticalPadding: CGFloat = 1
+    static let menuItemPadding: CGFloat = 4
+    static let menuItemContentStandardHeight: CGFloat = 18
+    static let menuPadding: CGFloat = 6
+}
+
+nonisolated
+enum MenuStyling {
+    static let headerFontSize: CGFloat = 13
+}
+
+#endif

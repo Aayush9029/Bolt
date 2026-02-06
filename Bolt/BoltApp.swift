@@ -11,14 +11,18 @@ import SwiftUI
 @main
 struct BoltApp: App {
     var boltVM: BoltViewModel = .init()
-    @State private var isPresented: Bool = true
+
+    init() {
+        // Register the helper daemon on launch
+        ServiceManager.instance.registerDaemons()
+    }
 
     var body: some Scene {
         MenuBarExtra {
             MenuView()
                 .environment(boltVM)
         } label: {
-            Label("Bolt", systemImage: boltVM.bclmValue > 95 ? "bolt" : "bolt.fill")
+            Label("Bolt", systemImage: boltVM.bclmValue >= 100 ? "bolt" : "bolt.fill")
         }
         .menuBarExtraStyle(.window)
     }

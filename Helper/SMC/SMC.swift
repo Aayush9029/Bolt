@@ -25,7 +25,6 @@
 
 import Foundation
 import IOKit
-import Shared
 
 //------------------------------------------------------------------------------
 // MARK: Type Aliases
