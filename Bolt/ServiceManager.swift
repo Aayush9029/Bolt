@@ -97,9 +97,7 @@ final class ServiceManager {
 
     @objc func setResetValues() {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
-            
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.setResetVal(key: "CH0B", value: 00)
@@ -115,9 +113,7 @@ final class ServiceManager {
     
     @objc func SMCReadByte(key: String, withReply reply: @escaping (UInt8) -> Void) {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
-            
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.readSMCByte(key: key) {
@@ -127,9 +123,7 @@ final class ServiceManager {
     
     @objc func SMCReadUInt32(key: String, withReply reply: @escaping (UInt32) -> Void) {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
-            
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.readSMCUInt32(key: key) {
@@ -139,9 +133,7 @@ final class ServiceManager {
     
     @objc func SMCWriteByte(key: String, value: UInt8) {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
-            
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.setSMCByte(key: key, value: value)
@@ -171,17 +163,16 @@ final class ServiceManager {
     //    MARK: - Helper Functions
 
     @objc func checkHelperVersion(withReply reply: @escaping (Bool) -> Void) {
-        print("checking helper version")
+        logger.debug("Checking helper version")
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
+            self.logRemoteProxyError($0)
             reply(false)
             return ()
             
         } as? HelperToolProtocol
         
         helper?.getVersion { version in
-            print("helperVersion:", helperVersion, " version from helper:", version)
+            self.logger.debug("Helper version expected \(helperVersion, privacy: .public), actual \(version, privacy: .public)")
             if !helperVersion.elementsEqual(version) {
                 reply(false)
                 return ()
@@ -195,8 +186,7 @@ final class ServiceManager {
     
     @objc func createAssertion(assertion: String, withReply reply: @escaping (IOPMAssertionID) -> Void) {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.createAssertion(assertion: assertion, withReply: { id in
@@ -206,8 +196,7 @@ final class ServiceManager {
     
     @objc func releaseAssertion(assertionID: IOPMAssertionID) {
         let helper = helperToolConnection.remoteObjectProxyWithErrorHandler {
-            let e = $0 as NSError
-            print("Remote proxy error \(e.code): \(e.localizedDescription) \(e.localizedRecoverySuggestion ?? "---")")
+            self.logRemoteProxyError($0)
         } as? HelperToolProtocol
         
         helper?.releaseAssertion(assertionID: assertionID)
@@ -245,5 +234,14 @@ final class ServiceManager {
 
     private func status(_ service: SMAppService) {
         logger.info("\(service.description) status: \(service)")
+    }
+
+    private func logRemoteProxyError(_ error: Error) {
+        let error = error as NSError
+        logger.error("""
+        Remote proxy error \(error.code, privacy: .public): \
+        \(error.localizedDescription, privacy: .public) \
+        \(error.localizedRecoverySuggestion ?? "---", privacy: .public)
+        """)
     }
 }

@@ -128,19 +128,22 @@ struct MenuView: View {
             }
 
             MenuCommand("Quit Bolt") {
-                // Reset charging to normal before quitting
-                ServiceManager.instance.setResetValues()
-                NSApp.terminate(nil)
+                quitButtonTapped()
             }
         }
     }
 
-    func showStandardAboutWindow() {
+    private func showStandardAboutWindow() {
         NSApp.sendAction(
             #selector(NSApplication.orderFrontStandardAboutPanel(_:)),
             to: nil,
             from: nil
         )
+    }
+
+    private func quitButtonTapped() {
+        ServiceManager.instance.setResetValues()
+        NSApp.terminate(nil)
     }
 }
 

@@ -12,7 +12,9 @@ import os
 import ServiceManagement
 import SwiftUI
 
-@Observable class BoltViewModel {
+@MainActor
+@Observable
+final class BoltViewModel {
     var batteryInfo: BatteryInfo? = .init(info: [:])
     var bclmValue: Int {
         didSet {
@@ -24,9 +26,9 @@ import SwiftUI
     var helperStatus: SMAppService.Status = .notFound
     var chargingInhibited: Bool = false
 
-    private var logger = Logger(category: "ViewModel")
-    private var batteryStatusTimer: Timer?
-    private var helperCheckTimer: Timer?
+    @ObservationIgnored private var logger = Logger(category: "ViewModel")
+    @ObservationIgnored private var batteryStatusTimer: Timer?
+    @ObservationIgnored private var helperCheckTimer: Timer?
 
     init() {
         let saved = UserDefaults.standard.integer(forKey: "bclmValue")
@@ -36,12 +38,16 @@ import SwiftUI
         refreshHelperStatus()
 
         batteryStatusTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
-            self?.refreshBatteryStatus()
-            self?.evaluateCharging()
+            Task { @MainActor in
+                self?.refreshBatteryStatus()
+                self?.evaluateCharging()
+            }
         }
 
         helperCheckTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { [weak self] _ in
-            self?.refreshHelperStatus()
+            Task { @MainActor in
+                self?.refreshHelperStatus()
+            }
         }
 
         checkHelperAndReadBCLM()
@@ -118,13 +124,13 @@ import SwiftUI
     }
 
     private func checkHelperAndReadBCLM() {
-        ServiceManager.instance.checkHelperVersion { [weak self] running in
-            guard let self, running else { return }
+        ServiceManager.instance.checkHelperVersion { running in
+            guard running else { return }
             ServiceManager.instance.SMCReadByte(key: "BCLM") { value in
-                DispatchQueue.main.async {
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
                     if value > 0 && value <= 100 {
                         self.logger.info("Read BCLM from SMC: \(value)")
-                        // Only use SMC value if user hasn't set one yet
                         let saved = UserDefaults.standard.integer(forKey: "bclmValue")
                         if saved == 0 {
                             self.bclmValue = Int(value)
@@ -146,15 +152,13 @@ import SwiftUI
             guard let info = IOPSGetPowerSourceDescription(snapshot, ps).takeUnretainedValue() as? [String: AnyObject] else { return }
 
             if (info[kIOPSMaxCapacityKey] as? Int ?? 0) > 50 {
-                DispatchQueue.main.async {
-                    self.batteryInfo = BatteryInfo(info: info)
-                    self.logger.debug("""
-                    State updated:
-                        Charging : \(self.batteryInfo?.isCharging ?? false)
-                        Battery  : \(self.batteryInfo?.currentCapacity ?? -1)
-                        Source   : \(self.batteryInfo?.powerSourceState ?? "Unknown")
-                    """)
-                }
+                batteryInfo = BatteryInfo(info: info)
+                logger.debug("""
+                State updated:
+                    Charging : \(self.batteryInfo?.isCharging ?? false)
+                    Battery  : \(self.batteryInfo?.currentCapacity ?? -1)
+                    Source   : \(self.batteryInfo?.powerSourceState ?? "Unknown")
+                """)
             }
         }
     }
